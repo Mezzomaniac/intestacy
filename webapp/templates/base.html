@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% if title %}
+        <title>{{ title }} - Intestacy Calculator WA</title>
+        {% else %}
+        <title>Intestacy Calculator WA</title>
+        {% endif %}
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style type="text/css">
+        table, td {border: 1px solid #333;}
+    </style>
+    </head>
+    
+    <body>
+        <div>Intestacy Calculator WA:
+            <a href="{{ url_for('index') }}">Home</a>
+            &emsp;
+            <a href="{{ url_for('questions') }}">Calculate</a>
+            &emsp;
+            <a href="{{ url_for('act') }}"><i>Administration Act 1903</i> (WA)</a>
+            &emsp;
+            <a href="{{ url_for('test') }}">test</a>
+        </div>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </body>
+</html>

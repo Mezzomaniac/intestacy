@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Distribution to beneficiaries on intestacy</h1>
+    </br>
+    <p>
+        <h4>Date of death: {{ deathdate }}
+        </br>
+        Value of estate: {{ value }}</br>
+        </h4>
+        Based on the information provided, the beneficiaries of the intestate estate are as follows:
+    </p>
+    <div>
+        <table>
+            {% for beneficiary, share in beneficiaries.iteritems() %}
+            <tr>
+                <td>{{ beneficiary }}</td>
+                <td>{{ share }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+{% endblock %}

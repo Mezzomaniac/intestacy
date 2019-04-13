@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Welcome to Intestacy Calculator WA</h1>
+    <hr>
+    <div>
+        <p style="size:8;">Version {{ version }}</p>
+        <p>Created 2018-2019 by Jeremy Thomas London</p>
+        <p>Please report any bugs to <a href="mailto:jeremylondon@outlook.com.au?subject=Intestacy%20Calculator">jeremylondon@outlook.com.au</a></p>
+    </div>
+    <hr>
+    <div>Please choose from the following options:
+        <ul>
+            <li><a href="{{ url_for('questions') }}">Calculate intestate distributions</a></li>
+            <li><a href="{{ url_for('act') }}"><i>Administration Act 1903</i> (WA)</a></li>
+        </ul>
+    </div>
+{% endblock %}
