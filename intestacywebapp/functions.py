@@ -92,6 +92,7 @@ def calculate():
     surviving_siblings = load('surviving_siblings')
     nonsurviving_siblings = load('nonsurviving_siblings')
     nibling_families = load('nibling_families')
+    grandparents = load('grandparents')
     auntuncles = load('auntuncles')
     surviving_auntuncles = load('surviving_auntuncles')
     nonsurviving_auntuncles = load('nonsurviving_auntuncles')
