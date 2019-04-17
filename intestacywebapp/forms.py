@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, PasswordField, SubmitField, DateField, DecimalField, IntegerField, FieldList
 from wtforms.validators import InputRequired, DataRequired, NumberRange
-from webapp.functions import ordinal_fmt
+from .functions import ordinal_fmt
 
 class SurvivingRelativeField(BooleanField):
     def __init__(self, relative, **kwargs):

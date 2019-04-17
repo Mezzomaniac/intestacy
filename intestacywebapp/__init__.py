@@ -9,4 +9,4 @@ app.config['SESSION_PERMANENT'] = False
 #app.config['PERMANENT_SESSION_LIFETIME'] = 60
 #Session(app)
 
-from webapp import routes
+from . import routes

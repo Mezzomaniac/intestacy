@@ -1,9 +1,9 @@
 import webbrowser
 from flask import render_template, flash, redirect, url_for, request, session
 
-from webapp import app
-from webapp.forms import *#LoginForm, QuestionsForm, TestForm, Questions2Form, questions2a_form_builder, Questions3Form, questions3a_form_builder
-from webapp.functions import update_session, load_from_session, set_specified_items, reset_session, calculate, money_fmt
+from . import app
+from .forms import *#LoginForm, QuestionsForm, TestForm, Questions2Form, questions2a_form_builder, Questions3Form, questions3a_form_builder
+from .functions import update_session, load_from_session, set_specified_items, reset_session, calculate, money_fmt
 
 @app.route('/')
 @app.route('/index')
