@@ -8,7 +8,6 @@ from .functions import update_session, load_from_session, set_specified_items, r
 @app.route('/')
 @app.route('/index')
 def index():
-    user = {'username': 'Mez'}
     return render_template('index.html', title='Home', version=app.config['VERSION'])
 
 @app.route('/act')
@@ -214,4 +213,4 @@ def distribution():
     beneficiaries = {beneficiary: money_fmt(share) for beneficiary, share in calculate().iteritems()}
     deathdate = load_from_session('deathdate').strftime('%d %B %Y')
     value = money_fmt(load_from_session('value'))
-    return render_template('distribution.html', title='Disttibution', beneficiaries=beneficiaries, value=value, deathdate=deathdate)
+    return render_template('distribution.html', title='Distribution', beneficiaries=beneficiaries, value=value, deathdate=deathdate)
