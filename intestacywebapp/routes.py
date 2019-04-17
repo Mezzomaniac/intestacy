@@ -2,19 +2,20 @@ import webbrowser
 from flask import render_template, flash, redirect, url_for, request, session
 
 from . import app
-from .forms import *#LoginForm, QuestionsForm, TestForm, Questions2Form, questions2a_form_builder, Questions3Form, questions3a_form_builder
+from .forms import *#LoginForm, Questions1Form, TestForm, Questions2Form, questions2a_form_builder, Questions3Form, questions3a_form_builder
 from .functions import update_session, load_from_session, set_specified_items, reset_session, calculate, money_fmt
+
+ACT_URL = "https://www.legislation.wa.gov.au/legislation/statutes.nsf/RedirectURL?OpenAgent&query=mrdoc_37039.htm#_Toc493060114"
 
 @app.route('/')
 @app.route('/index')
 def index():
-    user = {'username': 'Mez'}
     return render_template('index.html', title='Home', version=app.config['VERSION'])
 
 @app.route('/act')
 def act():
-    return webbrowser.open("https://www.legislation.wa.gov.au/legislation/statutes.nsf/RedirectURL?OpenAgent&query=mrdoc_37039.htm#_Toc493060114")
-    return redirect("https://www.legislation.wa.gov.au/legislation/statutes.nsf/RedirectURL?OpenAgent&query=mrdoc_37039.htm#_Toc493060114")  # TODO: open in new window
+    return webbrowser.open(ACT_URL)
+    return redirect(ACT_URL)  # TODO: open in new window
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -39,7 +40,6 @@ def test():
 
 @app.route('/test2', methods=['GET', 'POST'])
 def test2():
-    print session
     form = TestForm()
     #print(request.form)
     #session['c'][2] = 2
@@ -48,10 +48,7 @@ def test2():
     #print(arg)
     if form.validate_on_submit():
         print(session)
-        print session.new, session.modified, session.permanent
-        print
         print(request.form)
-        print
         print(form.data)
         #session['test'].update(form)
         return redirect(url_for('index'))
@@ -68,9 +65,10 @@ def test3(arg='a'):
     return render_template('index.html')
 
 @app.route('/questions', methods=['GET', 'POST'])
+@app.route('/questions/1', methods=['GET', 'POST'])
 def questions():
     reset_session()
-    form = QuestionsForm()
+    form = Questions1Form()
     if form.validate_on_submit():
         update_session(form.data)
         set_specified_items()
@@ -211,7 +209,7 @@ def questions7a():
 @app.route('/distribution')
 def distribution():
     #return redirect(url_for('test'))
-    beneficiaries = {beneficiary: money_fmt(share) for beneficiary, share in calculate().iteritems()}
+    beneficiaries = {beneficiary: money_fmt(share) for beneficiary, share in calculate().items()}
     deathdate = load_from_session('deathdate').strftime('%d %B %Y')
     value = money_fmt(load_from_session('value'))
-    return render_template('distribution.html', title='Disttibution', beneficiaries=beneficiaries, value=value, deathdate=deathdate)
+    return render_template('distribution.html', title='Distribution', beneficiaries=beneficiaries, value=value, deathdate=deathdate)

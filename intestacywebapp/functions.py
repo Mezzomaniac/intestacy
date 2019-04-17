@@ -1,6 +1,6 @@
 import datetime
 from decimal import Decimal
-#from functools import lru_cache
+from functools import lru_cache
 from flask import session, json
 
 def ordinal_fmt(n):
@@ -20,7 +20,6 @@ def reset_session():
     for key in session.copy():
         if key != 'csrf_token':
             del session[key]
-    #update_session({'issue': 0, 'parent': False, 'siblings': 0})
 
 class MyEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -35,7 +34,7 @@ def jsonify(data):
 
 def update_session(data):
     excluded = ('csrf_token', 'submit')
-    update = {k: jsonify(v) for k, v in data.iteritems() if k not in excluded}
+    update = {k: jsonify(v) for k, v in data.items() if k not in excluded}
     session.update(update)
 
 def unjsonify(data):
@@ -44,6 +43,7 @@ def unjsonify(data):
     except (ValueError, TypeError):
         return json.loads(data, parse_float=Decimal)
 
+@lru_cache(maxsize=32)
 def load_from_session(key):
     try:
         return unjsonify(session[key])
@@ -65,7 +65,7 @@ specified_items = {datetime.date(1977, 3, 1):
 
 def set_specified_items():
     deathdate = load_from_session('deathdate')
-    for date, amounts in sorted(specified_items.iteritems()):
+    for date, amounts in sorted(specified_items.items()):
         if deathdate >= date:
             update_session(amounts)
             return

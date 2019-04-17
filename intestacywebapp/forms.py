@@ -6,7 +6,7 @@ from .functions import ordinal_fmt
 class SurvivingRelativeField(BooleanField):
     def __init__(self, relative, **kwargs):
         label = "Was the Deceased surivived by {}?".format(relative)
-        super(SurvivingRelativeField, self).__init__(label, **kwargs)
+        super().__init__(label, **kwargs)
 
 class RelativeNumberField(IntegerField):
     def __init__(self, relative, num=None, origin='Deceased', validators=None, **kwargs):
@@ -14,7 +14,7 @@ class RelativeNumberField(IntegerField):
         if ordinal:
             ordinal += ' '
         label = "How many {} did the {}{} have at the date of the Deceased's death?".format(relative, ordinal, origin)
-        super(RelativeNumberField, self).__init__(label, validators, **kwargs)
+        super().__init__(label, validators, **kwargs)
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -40,7 +40,7 @@ class Test2Form(FlaskForm):
     #e = StringField('e')
     submit = SubmitField('Submit')
 
-class QuestionsForm(FlaskForm):
+class Questions1Form(FlaskForm):
     deathdate = DateField('What is the date of death (dd/mm/yyyy)?', [DataRequired()], format='%d/%m/%Y')
     value = DecimalField('What is the net value of the estate?', [InputRequired(), NumberRange(min=1)])
     spouse = SurvivingRelativeField('a spouse')
@@ -51,7 +51,7 @@ class Questions2Form(FlaskForm):
     submit = SubmitField('Next')
     
     def __init__(self, spouse, **kwargs):
-        super(Questions2Form, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.defactos.label.text = self.defactos.label.text.format(
             ', during which time the Deceased did not live as the husband or wife of their spouse,' if spouse else '')
 
