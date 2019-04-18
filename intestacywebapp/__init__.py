@@ -4,7 +4,7 @@ from flask import Flask
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(16)
-app.config['VERSION'] = '2'
+app.config['VERSION'] = '2.1.0'
 app.config['SESSION_PERMANENT'] = False
 #app.config['PERMANENT_SESSION_LIFETIME'] = 60
 #Session(app)

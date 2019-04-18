@@ -116,17 +116,17 @@ def calculate():
             beneficiaries['De facto partner'] = partner_share
         else:
             for length in defacto_rels:
-                beneficiaries['De facto partner ({} years)'.format(length)] = partner_share / defactos
+                beneficiaries[f'De facto partner ({length} years)'] = partner_share / defactos
         if surviving_issue == 1:
             beneficiaries['Surviving child'] = balance / issue
         else:
             for child in range(1, surviving_issue + 1):
-                beneficiaries['Surviving child {}'.format(child)] = balance / issue
+                beneficiaries[f'Surviving child {child}'] = balance / issue
         for child, grandchildren in enumerate(grandchildren_families, 1):
-            child_num = '' if nonsurviving_issue == 1 else ' {}'.format(child)
+            child_num = '' if nonsurviving_issue == 1 else f' {child}'
             for grandchild in range(1, grandchildren + 1):
-                gchild_num = '' if grandchildren == 1 else ' {}'.format(grandchild)
-                beneficiaries["Non-surviving child{}'s child{}".format(child_num, gchild_num)] = balance / issue / grandchildren
+                gchild_num = '' if grandchildren == 1 else f' {grandchild}'
+                beneficiaries[f"Non-surviving child{child_num}'s child{gchild_num}"] = balance / issue / grandchildren
     elif partner and (parent or siblings):
         # Item 3
         if spouse:
@@ -142,7 +142,7 @@ def calculate():
             beneficiaries['De facto partner'] = partner_share
         else:
             for length in defacto_rels:
-                beneficiaries['De facto partner ({} years)'.format(length)] = partner_share / defactos
+                beneficiaries[f'De facto partner ({length} years)'] = partner_share / defactos
         if parent:
             parent_share = min(balance, item3bi)
             balance = max(balance - item3bi, 0)
@@ -157,12 +157,12 @@ def calculate():
             beneficiaries['Surviving sibling'] = balance / siblings
         else:
             for sibling in range(1, surviving_siblings + 1):
-                beneficiaries['Surviving sibling {}'.format(sibling)] = balance / siblings
+                beneficiaries[f'Surviving sibling {sibling}'] = balance / siblings
         for sibling, niblings in enumerate(nibling_families, 1):
-            sib_num = '' if nonsurviving_siblings == 1 else ' {}'.format(sibling)
+            sib_num = '' if nonsurviving_siblings == 1 else f' {sibling}'
             for nibling in range(1, niblings + 1):
-                nib_num = '' if niblings == 1 else ' {}'.format(nibling)
-                beneficiaries["Non-surviving sibling{}'s child{}".format(sib_num, nib_num)] = balance / siblings / niblings
+                nib_num = '' if niblings == 1 else f' {nibling}'
+                beneficiaries[f"Non-surviving sibling{sib_num}'s child{nib_num}"] = balance / siblings / niblings
     elif partner:
         # Item 4
         if spouse:
@@ -174,19 +174,19 @@ def calculate():
             beneficiaries['De facto partner'] = partner_share
         else:
             for length in defacto_rels:
-                beneficiaries['De facto partner ({} years)'.format(length)] = partner_share / defactos
+                beneficiaries[f'De facto partner ({length} years)'] = partner_share / defactos
     elif issue:
         # Item 5
         if surviving_issue == 1:
             beneficiaries['Surviving child'] = value / issue
         else:
             for child in range(1, surviving_issue + 1):
-                beneficiaries['Surviving child {}'.format(child)] = value / issue
+                beneficiaries[f'Surviving child {child}'] = value / issue
         for child, grandchildren in enumerate(grandchildren_families, 1):
-            child_num = '' if nonsurviving_issue == 1 else ' {}'.format(child)
+            child_num = '' if nonsurviving_issue == 1 else f' {child}'
             for grandchild in range(1, grandchildren + 1):
-                gchild_num = '' if grandchildren == 1 else ' {}'.format(grandchild)
-                beneficiaries["Non-surviving child{}'s child{}".format(child_num, gchild_num)] = value / issue / grandchildren
+                gchild_num = '' if grandchildren == 1 else f' {grandchild}'
+                beneficiaries[f"Non-surviving child{child_num}'s child{gchild_num}"] = value / issue / grandchildren
     elif parent and siblings:
         # Item 6
         parent_share = min(value, item6)
@@ -202,12 +202,12 @@ def calculate():
             beneficiaries['Surviving sibling'] = balance / siblings
         else:
             for sibling in range(1, surviving_siblings + 1):
-                beneficiaries['Surviving sibling {}'.format(sibling)] = balance / siblings
+                beneficiaries[f'Surviving sibling {sibling}'] = balance / siblings
         for sibling, niblings in enumerate(nibling_families, 1):
-            sib_num = '' if nonsurviving_siblings == 1 else ' {}'.format(sibling)
+            sib_num = '' if nonsurviving_siblings == 1 else f' {sibling}'
             for nibling in range(1, niblings + 1):
-                nib_num = '' if niblings == 1 else ' {}'.format(nibling)
-                beneficiaries["Non-surviving sibling{}'s child{}".format(sib_num, nib_num)] = balance / siblings / niblings
+                nib_num = '' if niblings == 1 else f' {nibling}'
+                beneficiaries[f"Non-surviving sibling{sib_num}'s child{nib_num}"] = balance / siblings / niblings
     elif parent:
         # Item 7
         share = value / (father + mother)
@@ -221,31 +221,31 @@ def calculate():
             beneficiaries['Surviving sibling'] = value / siblings
         else:
             for sibling in range(1, surviving_siblings + 1):
-                beneficiaries['Surviving sibling {}'.format(sibling)] = value / siblings
+                beneficiaries[f'Surviving sibling {sibling}'] = value / siblings
         for sibling, niblings in enumerate(nibling_families, 1):
-            sib_num = '' if nonsurviving_siblings == 1 else ' {}'.format(sibling)
+            sib_num = '' if nonsurviving_siblings == 1 else f' {sibling}'
             for nibling in range(1, niblings + 1):
-                nib_num = '' if niblings == 1 else ' {}'.format(nibling)
-                beneficiaries["Non-surviving sibling{}'s child{}".format(sib_num, nib_num)] = value / siblings / niblings
+                nib_num = '' if niblings == 1 else f' {nibling}'
+                beneficiaries[f"Non-surviving sibling{sib_num}'s child{nib_num}"] = value / siblings / niblings
     elif grandparents:
         # Item 9
         if grandparents == 1:
             beneficiaries['Grandparent'] = value
         else:
             for grandparent in range(1, grandparents + 1):
-                beneficiaries['Grandparent {}'.format(grandparent)] = value / grandparents
+                beneficiaries[f'Grandparent {grandparent}'] = value / grandparents
     elif auntuncles:
         # Item 10
         if surviving_auntuncles == 1:
             beneficiaries['Surviving sibling'] = value / auntuncles
         else:
             for auntuncle in range(1, surviving_auntuncles + 1):
-                beneficiaries['Surviving aunt/uncle {}'.format(auntuncle)] = value / auntuncles
+                beneficiaries[f'Surviving aunt/uncle {auntuncle}'] = value / auntuncles
         for auntuncle, cousins in enumerate(cousin_families, 1):
-            au_num = '' if nonsurviving_auntuncles == 1 else ' {}'.format(auntuncle)
+            au_num = '' if nonsurviving_auntuncles == 1 else f' {auntuncle}'
             for cousin in range(1, cousins + 1):
-                cous_num = '' if cousins == 1 else ' {}'.format(cousin)
-                beneficiaries["Non-surviving aunt/uncle{}'s child{}".format(au_num, cous_num)] = value / auntuncles / cousins
+                cous_num = '' if cousins == 1 else f' {cousin}'
+                beneficiaries[f"Non-surviving aunt/uncle{au_num}'s child{cous_num}"] = value / auntuncles / cousins
     else:
         # Item 11
         beneficiaries['Crown'] = value
@@ -254,7 +254,7 @@ def calculate():
 
 def money_fmt(number):
     quantized = number.quantize(Decimal('.01'))
-    return '${:,.2f}'.format(quantized)
+    return f'${quantized:,.2f}'
 
 if __name__ == '__main__':
     dec = Decimal('1.5')

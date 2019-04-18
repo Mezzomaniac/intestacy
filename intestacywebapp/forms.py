@@ -5,7 +5,7 @@ from .functions import ordinal_fmt
 
 class SurvivingRelativeField(BooleanField):
     def __init__(self, relative, **kwargs):
-        label = "Was the Deceased surivived by {}?".format(relative)
+        label = f"Was the Deceased surivived by {relative}?"
         super().__init__(label, **kwargs)
 
 class RelativeNumberField(IntegerField):
@@ -13,7 +13,7 @@ class RelativeNumberField(IntegerField):
         ordinal = ordinal_fmt(num)
         if ordinal:
             ordinal += ' '
-        label = "How many {} did the {}{} have at the date of the Deceased's death?".format(relative, ordinal, origin)
+        label = f"How many {relative} did the {ordinal}{origin} have at the date of the Deceased's death?"
         super().__init__(label, validators, **kwargs)
 
 class LoginForm(FlaskForm):
@@ -88,13 +88,13 @@ def family_form_builder(families, origin, entries):
     class FamilyForm(FlaskForm):
         pass
     
-    label = 'How many living children did each non-surviving {} of the Deceased leave?'.format(origin)
-    origin = 'non-surviving {}'.format(origin)
+    label = f'How many living children did each non-surviving {origin} of the Deceased leave?'
+    origin = f'non-surviving {origin}'
     validators = [InputRequired(), NumberRange(min=1)]
     fieldlist = FieldList(
         RelativeNumberField('living children', origin=origin, validators=validators), 
         label, min_entries=entries)
-    setattr(FamilyForm, '{}_families'.format(families), fieldlist)
+    setattr(FamilyForm, f'{families}_families', fieldlist)
     FamilyForm.submit = SubmitField('Next')
     
     return FamilyForm()
