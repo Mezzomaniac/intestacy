@@ -1,3 +1,4 @@
+from decimal import Decimal
 import webbrowser
 from flask import render_template, flash, redirect, url_for, request, session
 
@@ -75,7 +76,7 @@ def questions():
         return redirect(url_for('questions2'))
     return render_template('questions.html', title='Questions', form=form)
 
-@app.route('/questions2', methods=['GET', 'POST'])
+@app.route('/questions/2', methods=['GET', 'POST'])
 def questions2():
     spouse = load_from_session('spouse')
     form = Questions2Form(spouse)
@@ -91,7 +92,7 @@ def questions2():
         return redirect(url_for('distribution'))
     return render_template('questions.html', title='Questions', form=form)
 
-@app.route('/questions2a', methods=['GET', 'POST'])
+@app.route('/questions/2a', methods=['GET', 'POST'])
 def questions2a():
     defactos = load_from_session('defactos')
     form = questions2a_form_builder(defactos)
@@ -102,7 +103,7 @@ def questions2a():
         return redirect(url_for('distribution'))
     return render_template('questions.html', title='Questions', form=form)
 
-@app.route('/questions3', methods=['GET', 'POST'])
+@app.route('/questions/3', methods=['GET', 'POST'])
 def questions3():
     form = Questions3Form()
     if form.validate_on_submit():
@@ -119,7 +120,7 @@ def questions3():
         return redirect(url_for('distribution'))
     return render_template('questions.html', title='Questions', form=form)
 
-@app.route('/questions3a', methods=['GET', 'POST'])
+@app.route('/questions/3a', methods=['GET', 'POST'])
 def questions3a():
     nonsurviving_issue = load_from_session('nonsurviving_issue')
     form = family_form_builder('grandchildren', 'child', nonsurviving_issue)
@@ -134,7 +135,7 @@ def questions3a():
         return redirect(url_for('distribution'))
     return render_template('questions.html', title='Questions', form=form)
 
-@app.route('/questions4', methods=['GET', 'POST'])
+@app.route('/questions/4', methods=['GET', 'POST'])
 def questions4():
     form = Questions4Form()
     if form.validate_on_submit():
@@ -150,7 +151,7 @@ def questions4():
         return redirect(url_for('distribution'))
     return render_template('questions.html', title='Questions', form=form)
 
-@app.route('/questions5', methods=['GET', 'POST'])
+@app.route('/questions/5', methods=['GET', 'POST'])
 def questions5():
     form = Questions5Form()
     if form.validate_on_submit():
@@ -164,7 +165,7 @@ def questions5():
         return redirect(url_for('distribution'))
     return render_template('questions.html', title='Questions', form=form)
 
-@app.route('/questions5a', methods=['GET', 'POST'])
+@app.route('/questions/5a', methods=['GET', 'POST'])
 def questions5a():
     nonsurviving_siblings = load_from_session('nonsurviving_siblings')
     form = family_form_builder('nibling', 'sibling', nonsurviving_siblings)
@@ -175,7 +176,7 @@ def questions5a():
         return redirect(url_for('distribution'))
     return render_template('questions.html', title='Questions', form=form)
 
-@app.route('/questions6', methods=['GET', 'POST'])
+@app.route('/questions/6', methods=['GET', 'POST'])
 def questions6():
     form = Questions6Form()
     if form.validate_on_submit():
@@ -185,7 +186,7 @@ def questions6():
         return redirect(url_for('distribution'))
     return render_template('questions.html', title='Questions', form=form)
 
-@app.route('/questions7', methods=['GET', 'POST'])
+@app.route('/questions/7', methods=['GET', 'POST'])
 def questions7():
     form = Questions7Form()
     if form.validate_on_submit():
@@ -197,7 +198,7 @@ def questions7():
         return redirect(url_for('distribution'))
     return render_template('questions.html', title='Questions', form=form)
 
-@app.route('/questions7a', methods=['GET', 'POST'])
+@app.route('/questions/7a', methods=['GET', 'POST'])
 def questions7a():
     nonsurviving_auntuncles = load_from_session('nonsurviving_auntuncles')
     form = family_form_builder('cousin', 'aunt or uncle', nonsurviving_auntuncles)
@@ -211,5 +212,5 @@ def distribution():
     #return redirect(url_for('test'))
     beneficiaries = {beneficiary: money_fmt(share) for beneficiary, share in calculate().items()}
     deathdate = load_from_session('deathdate').strftime('%d %B %Y')
-    value = money_fmt(load_from_session('value'))
+    value = money_fmt(Decimal(load_from_session('value')))
     return render_template('distribution.html', title='Distribution', beneficiaries=beneficiaries, value=value, deathdate=deathdate)
