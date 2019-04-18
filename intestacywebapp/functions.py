@@ -1,3 +1,5 @@
+#! /usr/bin/python3.6
+
 import datetime
 from decimal import Decimal
 from functools import lru_cache
@@ -28,7 +30,7 @@ class MyEncoder(json.JSONEncoder):
         elif isinstance(obj, datetime.date):
             return str(obj)
         return json.JSONEncoder.default(self, obj)
-        
+
 def jsonify(data):
     return json.dumps(data, cls=MyEncoder)
 
@@ -51,15 +53,15 @@ def load_from_session(key):
         return
 
 specified_items = {datetime.date(1977, 3, 1):
-                       {'item 2': 50000,
-                        'item 3(a) and (b)': 75000,
-                        'item 3(b)(i)': 6000,
-                        'item 6': 6000}#,
+                       {'item 2': Decimal(50000),
+                        'item 3(a) and (b)': Decimal(75000),
+                        'item 3(b)(i)': Decimal(6000),
+                        'item 6': Decimal(6000)}#,
                    #datetime.date(date Administration Act passes):
-                       #{'item 2': 435000,
-                        #'item 3(a) and (b)': 650000,
-                        #'item 3(b)(i)': 52000,
-                        #'item 6': 52000}
+                       #{'item 2': Decimal(435000),
+                        #'item 3(a) and (b)': Decimal(650000),
+                        #'item 3(b)(i)': Decimal(52000),
+                        #'item 6': Decimal(52000)}
                    }
 # TODO: After Administration Amendment Act passes, automatically check for new orders under s 14A Administration Act
 
@@ -72,11 +74,11 @@ def set_specified_items():
 
 def calculate():
     load = load_from_session
-    value = load('value')
-    item2 = load('item 2')
-    item3aandb = load('item 3(a) and (b)')
-    item3bi = load('item 3(b)(i)')
-    item6 = load('item 6')
+    value = Decimal(load('value'))
+    item2 = Decimal(load('item 2'))
+    item3aandb = Decimal(load('item 3(a) and (b)'))
+    item3bi = Decimal(load('item 3(b)(i)'))
+    item6 = Decimal(load('item 6'))
     spouse = load('spouse')
     defactos = load('defactos')
     defacto_rels = load('defacto_rels') or []
@@ -97,15 +99,15 @@ def calculate():
     surviving_auntuncles = load('surviving_auntuncles')
     nonsurviving_auntuncles = load('nonsurviving_auntuncles')
     cousin_families = load('cousin_families')
-    
+
     beneficiaries = {}
-    
+
     if partner and issue:
         # Item 2
         if spouse:
             spouse = not any(length >= 5 for length in defacto_rels)
         partner_share = min(value, item2)
-        balance = max(value - item2, 0)
+        balance = max(value - item2, Decimal(0))
         division = 2 if issue == 1 else 3
         partner_share += balance / division
         balance -= balance / division
@@ -132,7 +134,7 @@ def calculate():
         if spouse:
             spouse = not any(length >= 5 for length in defacto_rels)
         partner_share = min(value, item3aandb)
-        balance = max(value - item3aandb, 0)
+        balance = max(value - item3aandb, Decimal(0))
         partner_share += balance / 2
         balance /= 2
         partner_share = partner_share / (spouse + bool(defactos))
@@ -145,7 +147,7 @@ def calculate():
                 beneficiaries[f'De facto partner ({length} years)'] = partner_share / defactos
         if parent:
             parent_share = min(balance, item3bi)
-            balance = max(balance - item3bi, 0)
+            balance = max(balance - item3bi, Decimal(0))
             parent_share += balance / 2
             balance /= 2
             parent_share = parent_share / (father + mother)
@@ -190,7 +192,7 @@ def calculate():
     elif parent and siblings:
         # Item 6
         parent_share = min(value, item6)
-        balance = max(value - item6, 0)
+        balance = max(value - item6, Decimal(0))
         parent_share += balance / 2
         balance /= 2
         parent_share = parent_share / (father + mother)
@@ -249,7 +251,8 @@ def calculate():
     else:
         # Item 11
         beneficiaries['Crown'] = value
-    
+
+    print(beneficiaries)
     return beneficiaries
 
 def money_fmt(number):
@@ -262,4 +265,3 @@ if __name__ == '__main__':
     print(jsonify([dec, date]))
     print(repr(unjsonify(jsonify(dec))))
     print(repr(unjsonify(jsonify(date))))
-
