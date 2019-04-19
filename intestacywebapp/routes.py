@@ -15,7 +15,7 @@ def index():
 
 @app.route('/act')
 def act():
-    return webbrowser.open(ACT_URL)
+    #return webbrowser.open(ACT_URL)
     return redirect(ACT_URL)  # TODO: open in new window
 
 @app.route('/login', methods=['GET', 'POST'])
