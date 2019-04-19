@@ -115,8 +115,8 @@ class Questions4Form(FlaskForm):
     submit = SubmitField('Next')
 
 class Questions5Form(FlaskForm):
-    surviving_siblings = RelativeNumberField('living siblings', validators=[InputRequired(), NumberRange(min=0)])
-    nonsurviving_siblings = RelativeNumberField('deceased siblings who left children', validators=[InputRequired(), NumberRange(min=0)])
+    surviving_siblings = RelativeNumberField('living siblings (including half-siblings)', validators=[InputRequired(), NumberRange(min=0)])
+    nonsurviving_siblings = RelativeNumberField('deceased siblings (including half-siblings) who left children', validators=[InputRequired(), NumberRange(min=0)])
     submit = SubmitField('Next')
 
 '''def questions5a_form_builder(nonsurviving_siblings):
@@ -131,6 +131,6 @@ class Questions6Form(FlaskForm):
     submit = SubmitField('Next')
 
 class Questions7Form(FlaskForm):
-    surviving_auntuncles = RelativeNumberField('living aunts and uncles', validators=[InputRequired(), NumberRange(min=0)])
-    nonsurviving_auntuncles = RelativeNumberField('deceased aunts and uncles who left children', validators=[InputRequired(), NumberRange(min=0)])
+    surviving_auntuncles = RelativeNumberField('living aunts and uncles (including half-blood relations)', validators=[InputRequired(), NumberRange(min=0)])
+    nonsurviving_auntuncles = RelativeNumberField('deceased aunts and uncles (including half-blood relations) who left children', validators=[InputRequired(), NumberRange(min=0)])
     submit = SubmitField('Next')
