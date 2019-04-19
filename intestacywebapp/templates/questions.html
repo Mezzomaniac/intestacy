@@ -8,6 +8,9 @@
         {% if field.type not in ("CSRFTokenField", "SubmitField") %}
         <p>
             {{ field.label }}<br>
+            {% if field.type == "MoneyField" %}
+                $
+            {% endif %}
             {{ field(size=32) }}<br>
             {% for error in field.errors %}
             <span style="color: red;">[{{ error }}]</span>

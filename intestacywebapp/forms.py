@@ -3,6 +3,9 @@ from wtforms import StringField, BooleanField, PasswordField, SubmitField, DateF
 from wtforms.validators import InputRequired, DataRequired, NumberRange
 from .functions import ordinal_fmt
 
+class MoneyField(DecimalField):
+    pass
+
 class SurvivingRelativeField(BooleanField):
     def __init__(self, relative, **kwargs):
         label = f"Was the Deceased surivived by {relative}?"
@@ -42,7 +45,7 @@ class Test2Form(FlaskForm):
 
 class Questions1Form(FlaskForm):
     deathdate = DateField('What is the date of death (dd/mm/yyyy)?', [DataRequired()], format='%d/%m/%Y')
-    value = DecimalField('What is the net value of the estate?', [InputRequired(), NumberRange(min=1)])
+    value = MoneyField('What is the net value of the estate?', [InputRequired(), NumberRange(min=1)])
     spouse = SurvivingRelativeField('a spouse')
     submit = SubmitField('Next')
 
