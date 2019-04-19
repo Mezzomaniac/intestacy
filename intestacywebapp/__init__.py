@@ -1,12 +1,9 @@
-import os
 from flask import Flask
 #from flask.ext.session import Session
+from .config import Config
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.urandom(16)
-app.config['VERSION'] = '2.1.0'
-app.config['SESSION_PERMANENT'] = False
-#app.config['PERMANENT_SESSION_LIFETIME'] = 60
+app.config.from_object(Config)
 #Session(app)
 
 from . import routes
