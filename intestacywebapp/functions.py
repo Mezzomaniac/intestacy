@@ -22,6 +22,7 @@ def reset_session():
     for key in session.copy():
         if key != 'csrf_token':
             del session[key]
+    load_from_session.cache_clear()
 
 class MyEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -86,19 +87,19 @@ def calculate():
     issue = load('issue') or 0
     surviving_issue = load('surviving_issue')
     nonsurviving_issue = load('nonsurviving_issue')
-    grandchildren_families = load('grandchildren_families')
+    grandchildren_families = load('grandchildren_families') or 0
     parent = load('parent') or False
     father = load('father')
     mother = load('mother')
     siblings = load('siblings') or 0
     surviving_siblings = load('surviving_siblings')
     nonsurviving_siblings = load('nonsurviving_siblings')
-    nibling_families = load('nibling_families')
+    nibling_families = load('nibling_families') or 0
     grandparents = load('grandparents')
     auntuncles = load('auntuncles')
     surviving_auntuncles = load('surviving_auntuncles')
     nonsurviving_auntuncles = load('nonsurviving_auntuncles')
-    cousin_families = load('cousin_families')
+    cousin_families = load('cousin_families') or 0
 
     beneficiaries = {}
 
@@ -265,3 +266,4 @@ if __name__ == '__main__':
     print(jsonify([dec, date]))
     print(repr(unjsonify(jsonify(dec))))
     print(repr(unjsonify(jsonify(date))))
+
