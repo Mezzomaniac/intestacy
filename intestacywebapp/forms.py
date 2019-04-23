@@ -8,7 +8,7 @@ class MoneyField(DecimalField):
 
 class SurvivingRelativeField(BooleanField):
     def __init__(self, relative, **kwargs):
-        label = f"Was the Deceased surivived by {relative}?"
+        label = f"Was the Deceased survived by {relative}?"
         super().__init__(label, **kwargs)
 
 class RelativeNumberField(IntegerField):
