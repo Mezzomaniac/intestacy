@@ -87,19 +87,19 @@ def calculate():
     issue = load('issue') or 0
     surviving_issue = load('surviving_issue')
     nonsurviving_issue = load('nonsurviving_issue')
-    grandchildren_families = load('grandchildren_families') or 0
-    parent = load('parent') or False
+    grandchildren_families = load('grandchildren_families') or []
+    parent = load('parent') or 0
     father = load('father')
     mother = load('mother')
     siblings = load('siblings') or 0
     surviving_siblings = load('surviving_siblings')
     nonsurviving_siblings = load('nonsurviving_siblings')
-    nibling_families = load('nibling_families') or 0
-    grandparents = load('grandparents')
-    auntuncles = load('auntuncles')
+    nibling_families = load('nibling_families') or []
+    grandparents = load('grandparents') or 0
+    auntuncles = load('auntuncles') or 0
     surviving_auntuncles = load('surviving_auntuncles')
     nonsurviving_auntuncles = load('nonsurviving_auntuncles')
-    cousin_families = load('cousin_families') or 0
+    cousin_families = load('cousin_families') or []
 
     beneficiaries = {}
 
@@ -266,4 +266,3 @@ if __name__ == '__main__':
     print(jsonify([dec, date]))
     print(repr(unjsonify(jsonify(dec))))
     print(repr(unjsonify(jsonify(date))))
-
