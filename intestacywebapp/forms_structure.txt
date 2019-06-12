@@ -1,0 +1,223 @@
+form
+    (hidden tag)
+    div
+        label
+        br
+        input-date
+        br
+        (errors)
+    div
+        label
+        br
+        input-number-decimal-$
+        br
+        (errors)
+    (submit)
+form
+    (hidden tag)
+    div [spouse num]
+        label
+        br
+        ul-input-radio
+        br
+        (errors)
+    div [spouse]
+        label
+        br
+        input-string
+        br
+        (errors)
+    div [defactos num]
+        label
+        br
+        input-number-integer
+        br
+        (errors)
+    div [defactos]
+        ol
+            {li-hidden
+                div
+                    label
+                    br
+                    ul-input-radio
+                    br
+                    (errors)
+                div
+                    label
+                    br
+                    input-string
+                    br
+                    (errors)}
+            {}...
+    div [surviving issue num]
+        label
+        br
+        input-number-integer
+        br
+        (errors)
+    div [surviving issue]
+        ol
+            {li-hidden
+                label
+                br
+                input-string
+                br
+                (errors)}
+            {}...
+    div [nonsurviving issue num]
+        label
+        br
+        input-number-integer
+        br
+        (errors)
+    div [nonsurviving issue]
+        ol
+            {li-hidden
+                fieldset
+                    div
+                        label
+                        br
+                        input-string
+                        br
+                        (errors)
+                    div
+                        label
+                        br
+                        input-number-integer
+                        br
+                        (errors)
+                    div
+                        ol
+                            {li-hidden
+                                label
+                                br
+                                input-string
+                                br
+                                (errors)}
+                            {}...}
+            {}...
+    div [parents num]
+        label
+        br
+        input-number-integer
+        br
+        (errors)
+    div [surviving parents]
+        ol
+            {li-hidden
+                label
+                br
+                input-string
+                br
+                (errors)}
+            {}...
+    div [surviving siblings num]
+        label
+        br
+        input-number-integer
+        br
+        (errors)
+    div [surviving siblings]
+        ol
+            {li-hidden
+                label
+                br
+                input-string
+                br
+                (errors)}
+            {}...
+    div [nonsurviving siblings num]
+        label
+        br
+        input-number-integer
+        br
+        (errors)
+    div [nonsurviving siblings]
+        ol
+            {li-hidden
+                fieldset
+                    div
+                        label
+                        br
+                        input-string
+                        br
+                        (errors)
+                    div
+                        label
+                        br
+                        input-number-integer
+                        br
+                        (errors)
+                    div
+                        ol
+                            {li-hidden
+                                label
+                                br
+                                input-string
+                                br
+                                (errors)}
+                            {}...}
+            {}...
+    div [grandparents num]
+        label
+        br
+        input-number-integer
+        br
+        (errors)
+    div [surviving grandparents]
+        ol
+            {li-hidden
+                label
+                br
+                input-string
+                br
+                (errors)}
+            {}...
+    div [surviving auntuncles num]
+        label
+        br
+        input-number-integer
+        br
+        (errors)
+    div [surviving auntuncles]
+        ol
+            {li-hidden
+                label
+                br
+                input-string
+                br
+                (errors)}
+            {}...
+    div [nonsurviving auntuncles num]
+        label
+        br
+        input-number-integer
+        br
+        (errors)
+    div [nonsurviving auntuncles]
+        ol
+            {li-hidden
+                fieldset
+                    div
+                        label
+                        br
+                        input-string
+                        br
+                        (errors)
+                    div
+                        label
+                        br
+                        input-number-integer
+                        br
+                        (errors)
+                    div
+                        ol
+                            {li-hidden
+                                label
+                                br
+                                input-string
+                                br
+                                (errors)}
+                            {}...}
+            {}...
+    (submit)

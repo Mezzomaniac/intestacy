@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+{% if scripts %}
+{% include "scripts.html" %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    {% for field in form %}
+    {% if field.type not in ("CSRFTokenField", "SubmitField") %}
+    <div id="{{ field.id }}-div" class="{{ field.render_kw['class'] }}" {{ field.render_kw["hidden"] }}>
+        {% include "field.html" %}
+    </div>
+    {% endif %}
+    {% endfor %}
+    <p>
+        {{ form.submit() }}
+    </p>
+</form>
+{% endblock %}

@@ -1,0 +1,158 @@
+html {
+	background: seashell;
+	font: 20px/1.5 arial;
+}
+
+#creator {
+	font-size: 1rem;
+}
+
+address {
+	font-size: 0.9rem;
+}
+
+header {
+	font-size: 0.75rem;
+}
+
+nav>a {
+	margin: 1.2em;
+}
+
+#index {
+	padding-top: 1.6rem;
+}
+
+#index li {
+	margin: 1.3rem;
+	padding: 1rem;
+	font-size: 1.3rem;
+}
+
+form {
+	background: BurlyWood;
+	padding: 0.6rem;
+	font-size: 1.7rem;
+}
+
+form > div {
+	background: LightBlue;
+	margin: 0.7em;
+	padding: 0;
+}
+
+form > p {
+	margin: 0;
+	padding: 0;
+}
+
+form ul {
+	margin: 0.5em;
+	padding: 0.5em;
+}
+
+input {
+	font-size: 0.9em;
+	height: 1.2em;
+	margin: 0.7em;
+}
+
+input[type="submit"] {
+	border: 0.125em solid black;
+	font-weight: 500;
+	font-size: 1em;
+}
+
+input[type="radio"] {
+	height: 1.2em;
+	width: 1.2em;
+}
+
+input:invalid {
+	border: 0.175em dashed red;
+}
+
+/*button {
+	font-size: 0.9em;
+	height: 1.2em;
+	margin: 1.1em;
+	border: 0.1em solid black;
+	border-radius: 100px;
+	background-color: silver;
+	padding: 0.5em 0.5em 1.5em 0.5em;
+}*/
+
+h3 {
+	font-size: 1.3rem;
+}
+
+table {
+	display: block;
+	overflow-x: auto;
+	/*white-space: normal;*/
+	margin: 0 auto;
+	padding: 1.5em;
+	background-color: darkslateblue;
+	border-collapse: collapse;
+	border-color: dimgrey;
+	border-width: 0.8em;
+	border-style: solid;
+	font-size: 1.5rem;
+	line-height: normal;
+	text-align: center;
+}
+
+th, td {
+	margin: 1.2rem;
+	padding: 1.2rem;
+	border-color: darkgrey;
+	border-width: 0.8rem;
+	border-style: solid;
+}
+
+thead, tfoot {
+	font-weight: 1.3em;
+	font-size: 1.3em/1;
+	white-space: pre;
+	background-color: orchid;
+}
+
+.row-odd {
+	color: black;
+	background-color: lightgreen;
+}
+
+.row-even {
+	color: black;
+	background-color: moccasin;
+}
+
+td.beneficiary {
+	white-space: pre-wrap;
+}
+
+.notes {
+	text-align: left;
+	width: 15em;
+}
+
+th.notes {
+	text-align: center;
+}
+
+ul.notes>li {
+	margin-bottom: 0.5em;
+}
+
+.decimal {
+	text-align: "." center;
+}
+
+.fraction {
+	text-align: "/" center;
+}
+
+.col-major {
+	font-weight: 1.2em;
+	font-size: 1.3em;
+}

@@ -1,0 +1,8 @@
+<td class="col-major beneficiary">{{ relative.relationship }}</td>
+<td class="col-minor name">{{ relative.name|e }}</td>
+<td class="col-minor fixed decimal">{{ dollar(relative.fixed) }}</td>
+<td class="col-minor interest decimal">{{ dollar(relative.interest) }}</td>
+<td class="col-major fraction">{{ relative.fraction }}</td>
+<td class="col-minor percentage decimal">{{ relative.percentage }}</td>
+<td class="col-major share decimal">{{ dollar(relative.share) }}</td>
+<td class="col-minor notes"><ul class="notes">{% for note in relative.notes %}<li>{{ note }}</li>{% endfor %}</ul></td>

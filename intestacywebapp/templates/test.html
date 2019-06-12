@@ -1,20 +1,47 @@
 {% extends "base.html" %}
 
+{% block scripts %}
+<script type="application/javascript"
+    src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+<!--<script type="application/javascript"
+    src="/static/js/sijax/sijax.js"></script>
+<script type="application/javascript">
+    {{ g.sijax.get_js()|safe }}>
+</script>-->
+{% endblock %}
+
 {% block content %}
-    <h1>Test</h1>
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        {% for field in form %}
-        {% if field.type not in ("CSRFTokenField", "SubmitField") %}
-        <p>
-            {{ field.label }}<br>
-            {{ field(size=32) }}<br>
-            {% for error in field.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        {% endif %}
-        {% endfor %}
-        <p>{{ form.submit() }}</p>
-    </form>
+<h1>Test</h1>
+<form id="test" action="" method="post" novalidate="">
+    <fieldset id="q1">
+        <legend>Question 1</legend>
+        <label for="q1rad1">Yes</label>
+        <input id="q1rad1" type="radio" name="q1rad" value="true">
+        <label for="q1rad2">No</label>
+        <input id="q1rad2" type="radio" name="q1rad" value="false">
+        <!--<input id="q1btn" type="button" value="Go">-->
+    </fieldset>
+    <fieldset id="q2" hidden>
+        <legend>Question 2</legend>
+        <label for="q2txt">Text</label>
+        <input id="q2txt" type="text" name="q2txt">
+        <input id="q2submit" name="q2submit" type="submit" value="Submit">
+    </fieldset>
+</form>
+<script type="application/javascript">
+$(function() {
+    $("#q1rad1").bind('click', function() {
+        $('#q2').prop('hidden', false)
+        //Sijax.request('enable_q2', [$("input[name='q1rad']:checked".attr('value')],
+            //{ data: { csrf_token: "csrf_token" } });
+            // See flask-sijax docs re implementing real csrf_token
+        //Prevent the form from being submitted
+        //return false;
+    });
+    $("#q1rad2").bind('click', function() {
+        $('#q2').prop('hidden', true)
+    });
+});
+</script>
+<!--<a href="javascript://" onclick="Sijax.request('say_hi', ['Mez', '{{ to }}']);">Click here</a>-->
 {% endblock %}

@@ -1,0 +1,35 @@
+{% if field.type == "FieldList" %}
+<ol id="{{ field.id }}-ol">
+    {% for subfield in field %}
+    <li hidden>
+        {% set field = subfield %}
+        {% include "field.html" %}
+    </li>
+    {% endfor %}
+</ol>
+{% elif field.type == "FormField" %}
+<fieldset>
+{% for subfield in field %}
+    <div>
+        {% set field = subfield %}
+        {% include "field.html" %}
+    </div>
+{% endfor %}
+</fieldset>
+{% elif field.type not in ("CSRFTokenField", "SubmitField") %}
+{{ field.label }}<br>
+{% if field.type == "MoneyField" %}
+    $ {{ field(size=15) }}
+{% elif field.type == "StringField" %}
+{{ field(size=32) }}
+{% else %}
+{{ field(size=3) }}
+{% endif %}
+<!--{% if field.type == "RelativeNumberField" %}
+<button id="{{ field.id }}-btn" type="button">Update</button>
+{% endif %}-->
+<br>
+{% for error in field.errors %}
+<span style="color: red;">{{ error }}</span>
+{% endfor %}
+{% endif %}

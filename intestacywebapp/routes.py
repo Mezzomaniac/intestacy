@@ -1,10 +1,12 @@
-from decimal import Decimal
-import webbrowser
-from flask import render_template, flash, redirect, url_for, request, session
+import datetime
 
-from . import app
-from .forms import *#LoginForm, Questions1Form, TestForm, Questions2Form, questions2a_form_builder, Questions3Form, questions3a_form_builder
-from .functions import update_session, load_from_session, set_specified_items, reset_session, calculate, money_fmt
+from flask import redirect, render_template, request, session, url_for#, flash, g
+#import flask_sijax
+
+from intestacywebapp import app
+from intestacywebapp.forms import EstateForm, BeneficiariesForm
+from intestacywebapp import functions
+from intestacywebapp.models import *  # for testing only
 
 ACT_URL = "https://www.legislation.wa.gov.au/legislation/statutes.nsf/RedirectURL?OpenAgent&query=mrdoc_37039.htm#_Toc493060114"
 
@@ -15,202 +17,98 @@ def index():
 
 @app.route('/act')
 def act():
-    #return webbrowser.open(ACT_URL)
-    return redirect(ACT_URL)  # TODO: open in new window
+    return redirect(ACT_URL)
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        flash('Login requested for {}, remember me = {}'.format(form.username.data, form.remember.data))
-        return redirect(url_for('index'))
-    return render_template('login.html', title='Sign In', form=form)
-
+#@flask_sijax.route(app, "/test")
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-    beneficiaries = {'Sample data': '$10.00'}
-    deathdate = '12 January 1985'
-    value = '$10.00'
-    return render_template('distribution.html', title='Disttibution', beneficiaries=beneficiaries, value=value, deathdate=deathdate)
-    if form.validate_on_submit():
-        #print(form.data)
-        update_session(form.data)
-        #print(session)
-        return redirect(url_for('test2'))
-    return render_template('test.html', title='test', form=form)
+    return redirect(url_for('index'))
+    
+    from decimal import Decimal as D
+    estate = Estate(datetime.date.today(), D('1234567.89'))
+    estate.spouse = Relative('Spouse', 'Wifey')
+    estate.defactos = [DeFacto(name='Angela', length=5), DeFacto(name='Pamela', length=2), DeFacto(name='Sandra', length=0), DeFacto(name='Rita', length=2)]
+    estate.parents = [Relative('Parent', 'Mum'), Relative('Parent', 'Dad')]
+    estate.siblings = [DescendibleRelative('Surviving Sibling 1', 'Little Bro'), DescendibleRelative('Surviving Sibling 2', 'Little Sis')]
+    estate.siblings.append(DescendibleRelative('Non-surviving Sibling 1', 'Big Bro', False, [Relative('Grandchild', 'Dog'), Relative('Grandchild', 'Cat'), Relative('Grandchild', 'Fish')]))
+    estate.siblings.append(DescendibleRelative('Non-surviving Sibling 2', 'Big Sis', False, [Relative('Grandchild', 'Monkey'), Relative('Grandchild', 'Dolphin'), Relative('Grandchild', 'Lion')]))
+    estate.distribute()
+    return render_template('distribution.html', title='Test', 
+    estate=estate, dollar=functions.money_fmt)
+    
+    #def say_hi(obj_response, hello_from, hello_to):
+        #obj_response.alert(f'Hi from {hello_from} to {hello_to}!')
+        #obj_response.css('a', 'color', 'green')
+        
+    #if g.sijax.is_sijax_request:
+        #g.sijax.register_callback('say_hi', say_hi)
+        #return g.sijax.process_request()
+    
+    #def enable_q2(obj_response, q1):
+        #print(q1)
+        #if q1 == 'true':
+             #obj_response.attr('#q2', 'disabled', False)
+    
+    #if g.sijax.is_sijax_request:
+        #print(request.method)
+        #print(obj_response)
+        #g.sijax.register_callback('enable_q2', enable_q2)
+        #return g.sijax.process_request()
+    #print(request.method)
+    #print(request.form)
+    #return render_template('test.html', title='test', to='Memmy')
+    
+    form = BeneficiariesForm()
+    specified_items = {
+        'item_2': 50000,
+        'item_3a_and_b': 75000, 
+        'item_3bi': 6000, 
+        'item_6': 6000}
+    return render_template('form.html', title="Test", form=form, scripts=True, 
+        specified_items=specified_items, value=80000)
 
 @app.route('/test2', methods=['GET', 'POST'])
 def test2():
     form = TestForm()
-    #print(request.form)
-    #session['c'][2] = 2
-    #print(session)
-    #arg2=request.args
-    #print(arg)
     if form.validate_on_submit():
-        print(session)
-        print(request.form)
-        print(form.data)
-        #session['test'].update(form)
-        return redirect(url_for('index'))
-        #return redirect(url_for('test2'))
+        return redirect(url_for('test1'))
     return render_template('test.html', title='test2', form=form)
 
-@app.route('/test3')
-def test3(arg='a'):
-    session['c'][3] = 3
-    print(session['c'])
-    arg2=request.args
-    #print(arg)
-    flash(session['c'])
-    return render_template('index.html')
-
-@app.route('/questions', methods=['GET', 'POST'])
-@app.route('/questions/1', methods=['GET', 'POST'])
-def questions():
-    reset_session()
-    form = Questions1Form()
+@app.route('/calculate', methods=['GET', 'POST'])
+@app.route('/calculate/estate', methods=['GET', 'POST'])
+def calculate():
+    functions.reset_session()
+    form = EstateForm()
     if form.validate_on_submit():
-        update_session(form.data)
-        set_specified_items()
-        return redirect(url_for('questions2'))
-    return render_template('questions.html', title='Questions', form=form)
+        functions.update_session(form.data)
+        functions.set_specified_items(form.deathdate.data)
+        # TODO: compare deathdate to date of 2002 amendments
+        return redirect(url_for('beneficiaries'))
+    return render_template('form.html', title='Calculate Intestacy - Estate Details', form=form)
 
-@app.route('/questions/2', methods=['GET', 'POST'])
-def questions2():
-    spouse = load_from_session('spouse')
-    form = Questions2Form(spouse)
+@app.route('/calculate/beneficiaries', methods=['GET', 'POST'])
+def beneficiaries():
+    form = BeneficiariesForm()
     if form.validate_on_submit():
-        update_session(form.data)
-        defactos = load_from_session('defactos')
-        partner = spouse or defactos
-        update_session({'partner': partner})
-        if spouse + defactos > 1:
-            return redirect(url_for('questions2a'))
-        elif not partner or load_from_session('value') > load_from_session('item 2'):
-            return redirect(url_for('questions3'))
+        # TODO: For better UX, add client-side validation using html built-in validation and js validation
+        functions.update_session(form.data)
         return redirect(url_for('distribution'))
-    return render_template('questions.html', title='Questions', form=form)
+    deathdate = functions.load_from_session('deathdate')
+    fam_ct_am_act_02 = deathdate >= functions.FAM_CT_AM_ACT_02
+    specified_items = functions.load_from_session('specified_items')
+    value = functions.load_from_session('value')
+    return render_template('form.html', 
+        title="Calculate Intestacy - Beneficiaries' Details", 
+        form=form, 
+        scripts=True,
+        specified_items=specified_items, 
+        value=value,
+        fam_ct_am_act_02=fam_ct_am_act_02)
 
-@app.route('/questions/2a', methods=['GET', 'POST'])
-def questions2a():
-    defactos = load_from_session('defactos')
-    form = questions2a_form_builder(defactos)
-    if form.validate_on_submit():
-        update_session(form.data)
-        if not load_from_session('partner') or load_from_session('value') > load_from_session('item 2'):
-            return redirect(url_for('questions3'))
-        return redirect(url_for('distribution'))
-    return render_template('questions.html', title='Questions', form=form)
-
-@app.route('/questions/3', methods=['GET', 'POST'])
-def questions3():
-    form = Questions3Form()
-    if form.validate_on_submit():
-        update_session(form.data)
-        issue = form.surviving_issue.data + form.nonsurviving_issue.data
-        update_session({'issue': issue})
-        partner = load_from_session('partner')
-        value = load_from_session('value')
-        item3aandb = load_from_session('item 3(a) and (b)')
-        if form.nonsurviving_issue.data:
-            return redirect(url_for('questions3a'))
-        elif (partner and not issue and value > item3aandb) or not (partner or issue):
-            return redirect(url_for('questions4'))
-        return redirect(url_for('distribution'))
-    return render_template('questions.html', title='Questions', form=form)
-
-@app.route('/questions/3a', methods=['GET', 'POST'])
-def questions3a():
-    nonsurviving_issue = load_from_session('nonsurviving_issue')
-    form = family_form_builder('grandchildren', 'child', nonsurviving_issue)
-    if form.validate_on_submit():
-        update_session(form.data)
-        partner = load_from_session('partner')
-        issue = load_from_session('issue')
-        value = load_from_session('value')
-        item3aandb = load_from_session('item 3(a) and (b)')
-        if (partner and not issue and value > item3aandb) or not (partner or issue):
-            return redirect(url_for('questions4'))
-        return redirect(url_for('distribution'))
-    return render_template('questions.html', title='Questions', form=form)
-
-@app.route('/questions/4', methods=['GET', 'POST'])
-def questions4():
-    form = Questions4Form()
-    if form.validate_on_submit():
-        update_session(form.data)
-        parent = form.father.data or form.mother.data
-        update_session({'parent': parent})
-        partner = load_from_session('partner')
-        value = load_from_session('value')
-        item3aandb = load_from_session('item 3(a) and (b)')
-        item3bi = load_from_session('item 3(b)(i)')
-        if not parent or (partner and value > item3aandb + 2 * item3bi):
-            return redirect(url_for('questions5'))
-        return redirect(url_for('distribution'))
-    return render_template('questions.html', title='Questions', form=form)
-
-@app.route('/questions/5', methods=['GET', 'POST'])
-def questions5():
-    form = Questions5Form()
-    if form.validate_on_submit():
-        update_session(form.data)
-        siblings = form.surviving_siblings.data + form.nonsurviving_siblings.data
-        update_session({'siblings': siblings})
-        if form.nonsurviving_siblings.data:
-            return redirect(url_for('questions5a'))
-        elif not (load_from_session('partner') or load_from_session('parent') or siblings):
-            return redirect(url_for('questions6'))
-        return redirect(url_for('distribution'))
-    return render_template('questions.html', title='Questions', form=form)
-
-@app.route('/questions/5a', methods=['GET', 'POST'])
-def questions5a():
-    nonsurviving_siblings = load_from_session('nonsurviving_siblings')
-    form = family_form_builder('nibling', 'sibling', nonsurviving_siblings)
-    if form.validate_on_submit():
-        update_session(form.data)
-        if not (load_from_session('partner') or load_from_session('parent') or load_from_session('siblings')):
-            return redirect(url_for('questions6'))
-        return redirect(url_for('distribution'))
-    return render_template('questions.html', title='Questions', form=form)
-
-@app.route('/questions/6', methods=['GET', 'POST'])
-def questions6():
-    form = Questions6Form()
-    if form.validate_on_submit():
-        update_session(form.data)
-        if not form.grandparents.data:
-            return redirect(url_for('questions7'))
-        return redirect(url_for('distribution'))
-    return render_template('questions.html', title='Questions', form=form)
-
-@app.route('/questions/7', methods=['GET', 'POST'])
-def questions7():
-    form = Questions7Form()
-    if form.validate_on_submit():
-        update_session(form.data)
-        auntuncles = form.surviving_auntuncles.data + form.nonsurviving_auntuncles.data
-        update_session({'auntuncles': auntuncles})
-        if form.nonsurviving_auntuncles.data:
-            return redirect(url_for('questions7a'))
-        return redirect(url_for('distribution'))
-    return render_template('questions.html', title='Questions', form=form)
-
-@app.route('/questions/7a', methods=['GET', 'POST'])
-def questions7a():
-    nonsurviving_auntuncles = load_from_session('nonsurviving_auntuncles')
-    form = family_form_builder('cousin', 'aunt or uncle', nonsurviving_auntuncles)
-    if form.validate_on_submit():
-        update_session(form.data)
-        return redirect(url_for('distribution'))
-    return render_template('questions.html', title='Questions', form=form)
-
-@app.route('/distribution')
+@app.route('/calculate/distribution')
 def distribution():
-    #return redirect(url_for('test'))
-    beneficiaries = {beneficiary: money_fmt(share) for beneficiary, share in calculate().items()}
-    deathdate = load_from_session('deathdate').strftime('%d %B %Y')
-    value = money_fmt(Decimal(load_from_session('value')))
-    return render_template('distribution.html', title='Distribution', beneficiaries=beneficiaries, value=value, deathdate=deathdate)
+    estate = functions.calculate_distribution(**functions.load_session())
+    # TODO: Also say whether a grant of LoA is required to get $ from a bank (AA s139)
+    return render_template('distribution.html', title='Distribution', 
+    estate=estate, dollar=functions.money_fmt)
+    # TODO: Enable saving a set of beneficiaries to be recalculated with a different net value

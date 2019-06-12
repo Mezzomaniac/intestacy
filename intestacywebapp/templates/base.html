@@ -1,26 +1,27 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <meta charset="utf-8">
+        <meta charset="UTF-8">
         {% if title %}
         <title>{{ title }} - Intestacy Calculator WA</title>
         {% else %}
         <title>Intestacy Calculator WA</title>
         {% endif %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+        {% block scripts %}{% endblock %}
     </head>
     
     <body>
-        <div>Intestacy Calculator WA:
-            <a href="{{ url_for('index') }}">Home</a>
-            &emsp;
-            <a href="{{ url_for('questions') }}">Calculate</a>
-            &emsp;
-            <a href="{{ url_for('act') }}"><i>Administration Act 1903</i> (WA)</a>
-            &emsp;
-            <a href="{{ url_for('test') }}">test</a>
-        </div>
-        <hr>
+        <header>
+            Intestacy Calculator WA:
+            <nav>
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('calculate') }}">Calculate</a>
+                <a href="{{ url_for('act') }}" rel="external" target="_blank"><cite><i>Administration Act 1903</i></cite> (WA)</a>
+                <a href="{{ url_for('test') }}">test</a>
+            </nav>
+            <hr>
+        </header>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>

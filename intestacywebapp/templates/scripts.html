@@ -1,0 +1,9 @@
+<script type="text/javascript"
+    src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+<script type="text/javascript"
+    src="{{ url_for('static', filename='js/questions.js') }}"></script>
+<script type="text/javascript">
+var value = {{ value|float }};
+var specifiedItems = {{ specified_items|tojson }};
+var famCtAmAct02 = {{ fam_ct_am_act_02|int }};
+</script>
