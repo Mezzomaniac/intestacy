@@ -95,7 +95,7 @@ class Estate:
     
     def __init__(self, deathdate:datetime.date, value:Decimal):
         self.deathdate = deathdate
-        self.value = value
+        self.value = Decimal(value)
         self.set_specified_items()
         
         self.spouse = None
