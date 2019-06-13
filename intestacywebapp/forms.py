@@ -67,7 +67,7 @@ def nonsurviving_relative_form_builder(origin, child):
             csrf = False
         
         name = StringField(
-            f"(Optional) What is the non-surviving {origin}'s' name?",
+            f"(Optional) What is the non-surviving {origin}'s name?",
             render_kw={'placeholder': origin.title()}) 
         issue_num = RelativeNumberField(
             'living children', origin=f'non-surviving {origin}', 
