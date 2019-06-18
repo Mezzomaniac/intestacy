@@ -20,14 +20,9 @@
 {{ field.label }}<br>
 {% if field.type == "MoneyField" %}
     $ {{ field(size=15) }}
-{% elif field.type == "StringField" %}
-{{ field(size=32) }}
 {% else %}
-{{ field(size=3) }}
+{{ field(size=32) }}
 {% endif %}
-<!--{% if field.type == "RelativeNumberField" %}
-<button id="{{ field.id }}-btn" type="button">Update</button>
-{% endif %}-->
 <br>
 {% for error in field.errors %}
 <span style="color: red;">{{ error }}</span>

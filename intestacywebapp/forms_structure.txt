@@ -30,7 +30,7 @@ form
     div [defactos num]
         label
         br
-        input-number-integer
+        select-int
         br
         (errors)
     div [defactos]
@@ -52,7 +52,7 @@ form
     div [surviving issue num]
         label
         br
-        input-number-integer
+        select-int
         br
         (errors)
     div [surviving issue]
@@ -67,7 +67,7 @@ form
     div [nonsurviving issue num]
         label
         br
-        input-number-integer
+        select-int
         br
         (errors)
     div [nonsurviving issue]
@@ -83,7 +83,7 @@ form
                     div
                         label
                         br
-                        input-number-integer
+                        select-int
                         br
                         (errors)
                     div
@@ -99,7 +99,7 @@ form
     div [parents num]
         label
         br
-        input-number-integer
+        select-int
         br
         (errors)
     div [surviving parents]
@@ -114,7 +114,7 @@ form
     div [surviving siblings num]
         label
         br
-        input-number-integer
+        select-int
         br
         (errors)
     div [surviving siblings]
@@ -129,7 +129,7 @@ form
     div [nonsurviving siblings num]
         label
         br
-        input-number-integer
+        select-int
         br
         (errors)
     div [nonsurviving siblings]
@@ -145,7 +145,7 @@ form
                     div
                         label
                         br
-                        input-number-integer
+                        select-int
                         br
                         (errors)
                     div
@@ -161,7 +161,7 @@ form
     div [grandparents num]
         label
         br
-        input-number-integer
+        select-int
         br
         (errors)
     div [surviving grandparents]
@@ -176,7 +176,7 @@ form
     div [surviving auntuncles num]
         label
         br
-        input-number-integer
+        select-int
         br
         (errors)
     div [surviving auntuncles]
@@ -191,7 +191,7 @@ form
     div [nonsurviving auntuncles num]
         label
         br
-        input-number-integer
+        select-int
         br
         (errors)
     div [nonsurviving auntuncles]
@@ -207,7 +207,7 @@ form
                     div
                         label
                         br
-                        input-number-integer
+                        select-int
                         br
                         (errors)
                     div

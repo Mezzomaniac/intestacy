@@ -57,15 +57,22 @@ input {
 	margin: 0.7em;
 }
 
+input[type="radio"] {
+	height: 1.2em;
+	width: 1.2em;
+}
+
+select {
+	font-size: 0.9em;
+	height: 1.2em;
+	width: 3em;
+	margin: 0.7em;
+}
+
 input[type="submit"] {
 	border: 0.125em solid black;
 	font-weight: 500;
 	font-size: 1em;
-}
-
-input[type="radio"] {
-	height: 1.2em;
-	width: 1.2em;
 }
 
 input:invalid {

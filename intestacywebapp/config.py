@@ -2,7 +2,7 @@ import os
 
 class Config:
     SECRET_KEY = os.urandom(16)
-    VERSION = '2.2.0'
+    VERSION = '2.2.1'
     
     #TESTING = True
     #SEND_FILE_MAX_AGE_DEFAULT = 0  # For development only

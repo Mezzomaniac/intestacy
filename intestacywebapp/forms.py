@@ -1,7 +1,7 @@
 import datetime
 
 from flask_wtf import FlaskForm
-from wtforms import FieldList, FormField, RadioField, StringField, SubmitField
+from wtforms import FieldList, FormField, RadioField, SelectField, StringField, SubmitField
 from wtforms.fields.html5 import DateField, DecimalField, IntegerField
 from wtforms.validators import InputRequired, NumberRange, ValidationError
 
@@ -47,18 +47,22 @@ class DeFactoInfoForm(FlaskForm):
         render_kw={'placeholder': 'De Facto Partner'})
         # TODO: Number the placeholder text 'De Facto Partner 1' etc
 
-class RelativeNumberField(IntegerField):
-    def __init__(self, relative='', num=None, origin='Deceased', validators=[InputRequired(), NumberRange(min=0)], **kwargs):
+class RelativeNumberField(SelectField):
+    def __init__(self, relative='', num=None, origin='Deceased', validators=None, max=20, **kwargs):
         ordinal = ordinal_fmt(num)
         if ordinal:
             ordinal += ' '
         # TODO: Use {{ loop.index }} for num
         label = f"How many {relative} did the {ordinal}{origin} have at the date of the Deceased's death?"
+        if validators is None:
+            validators = [InputRequired('Please type a number'), NumberRange(min=0)]
+        choices = [(n, str(n)) for n in range(max + 1)]
         kwargs.setdefault('render_kw', {}).setdefault('required', True)
         class_ = kwargs['render_kw'].get('class', '').split()
-        class_.append('relative-number-field')
+        if 'relative-number-field' not in class_:
+            class_.append('relative-number-field')
         kwargs['render_kw']['class'] = ' '.join(class_)
-        super().__init__(label, validators=validators, default=0, **kwargs)
+        super().__init__(label, validators=validators, default=0, choices=choices, coerce=int, **kwargs)
 
 def nonsurviving_relative_form_builder(origin, child):
     
@@ -116,7 +120,7 @@ class EstateForm(FlaskForm):
             
     value = MoneyField(
         'What is the net value of (the intestate portion of) the estate?', 
-        [InputRequired(), NumberRange(
+        [InputRequired('Please type a number'), NumberRange(
             min=1, 
             message='Estate value must be at least $1.00')],
         render_kw={'min': '1'})
@@ -150,6 +154,7 @@ class BeneficiariesForm(FlaskForm):
 <span class="if-spouse" hidden>\
 , during which time the Deceased did not live as the husband or wife of their spouse,\
 </span>',
+        max=4, 
         render_kw={'class': 'if-fam-ct-am-act-02 defactos'})
     defactos = FieldList(
         FormField(
@@ -179,7 +184,10 @@ class BeneficiariesForm(FlaskForm):
         render_kw={'class': 'issue, if-no-partner if-item2'}, 
         min_entries=20)
     
-    parents_num = RelativeNumberField('living parents', render_kw={'class': 'parents'})
+    parents_num = RelativeNumberField(
+        'living parents', 
+        max=2, 
+        render_kw={'class': 'parents'})
     parents = FieldList(
         StringField(
             "(Optional) What is the surviving parent's name?",
@@ -211,6 +219,7 @@ class BeneficiariesForm(FlaskForm):
 
     grandparents_num = RelativeNumberField(
         'living grandparents', 
+        max=4, 
         render_kw={'class': 'grandparents'})
     grandparents = FieldList(
         StringField(
@@ -222,6 +231,7 @@ class BeneficiariesForm(FlaskForm):
 
     surviving_auntuncles_num = RelativeNumberField(
         'living aunts and uncles (including half-blood relations)', 
+        max=40, 
         render_kw={'class': 'auntuncles'})
     surviving_auntuncles = FieldList(
         StringField(
@@ -232,6 +242,7 @@ class BeneficiariesForm(FlaskForm):
         min_entries=40)
     nonsurviving_auntuncles_num = RelativeNumberField(
         'deceased aunts and uncles (including half-blood relations) who left children', 
+        max=40, 
         render_kw={'class': 'auntuncles'})
     nonsurviving_auntuncles = FieldList(
         FormField(

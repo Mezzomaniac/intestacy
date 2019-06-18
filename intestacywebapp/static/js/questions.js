@@ -19,6 +19,7 @@ $(function() {
 function init() {
     displayIfFamCtAmAct02();
     displayIfItem2();
+    //displayInvalid();
     bindEventActions();
 };
 
@@ -34,9 +35,13 @@ function displayIfItem2() {
     };
 };
 
+//function displayInvalid() {
+    //$(':invalid').show().parents().show();
+//};
+
 function bindEventActions() {
     //disableSubmit();
-    displaySubforms();
+    displaySubfields();
     updateSpouse();
     updateDefacto();
     updateSurvivingIssue();
@@ -47,17 +52,8 @@ function bindEventActions() {
     updateGrandparents();
 };
 
-//function disableSubmit() {
-    //$('.relative-number-field').change(function() {
-        //$(this).next().css('box-shadow', '0 0 2.5em forestgreen');
-        //$('#submit').prop('disabled', true);
-    //});
-//};
-
-function displaySubforms() {
+function displaySubfields() {
     $('.relative-number-field').change(function() {
-    //$("button").click(function() {
-        //$(this).css('box-shadow', 'initial');
         //var n = Number($(this).prev().val());
         var n = Number($(this).val());
         var container = $(this).parent().next().children();  // ol
@@ -65,7 +61,6 @@ function displaySubforms() {
         var forms = $(container).children('li');
         $(forms).slice(0, n).slideDown(500).find('input.relative-number-field').prop('required', true);
         $(forms).slice(n).slideUp(500).find('input.relative-number-field').prop('required', false);
-        //$('#submit').prop('disabled', false);
     });
 };
 
@@ -83,7 +78,6 @@ function updateSpouse() {
 };
 
 function updateDefacto() {
-    //$("#defactos_num-btn, input[name$='length']").click(function() {
     function _updateDefacto() {
         defactosNum = Number($('#defactos_num').val());
         var lengths = $("input[name$='length']:checked").get().slice(0, defactosNum).map(elem => Number(elem.value));
@@ -101,7 +95,6 @@ function updateDefacto() {
 };
 
 function updateSurvivingIssue() {
-    //$('#surviving_issue_num-btn').click(function() {
     $('#surviving_issue_num').change(function() {
         survivingIssue = Boolean(Number($('#surviving_issue_num').val()));
         issue = survivingIssue || nonSurvivingIssue;
@@ -113,10 +106,9 @@ function updateSurvivingIssue() {
 };
 
 function updateNonsurvivingIssue() {
-    //$("#nonsurviving_issue_num-btn, button[id$='-issue_num-btn']").click(function() {
-    $("#nonsurviving_issue_num, input[id$='-issue_num']").change(function() {
+    $("#nonsurviving_issue_num, select[id$='-issue_num']").change(function() {
         nonsurvivingIssueNum = Number($('#nonsurviving_issue_num').val());
-        var grandchildren = $('#nonsurviving_issue-div').find("input[id$='-issue_num']").get().slice(0, nonsurvivingIssueNum).map(elem => Number(elem.value));
+        var grandchildren = $('#nonsurviving_issue-div').find("select[id$='-issue_num']").get().slice(0, nonsurvivingIssueNum).map(elem => Number(elem.value));
         var max = Math.max(...grandchildren);
         nonSurvivingIssue = Boolean(nonsurvivingIssueNum && max);
         issue = survivingIssue || nonSurvivingIssue;
@@ -128,7 +120,6 @@ function updateNonsurvivingIssue() {
 };
 
 function updateParents() {
-    //$('#parents_num-btn').click(function() {
     $('#parents_num').change(function() {
         parents = Boolean(Number($('#parents_num').val()));
         displaySiblings();
@@ -138,7 +129,6 @@ function updateParents() {
 };
 
 function updateSurvivingSiblings() {
-    //$('#surviving_siblings_num-btn').click(function() {
     $('#surviving_siblings_num').change(function() {
         survivingSiblings = Boolean(Number($('#surviving_siblings_num').val()));
         siblings = survivingSiblings || nonSurvivingSiblings;
@@ -148,10 +138,9 @@ function updateSurvivingSiblings() {
 };
 
 function updateNonsurvivingSiblings() {
-    //$("#nonsurviving_siblings_num-btn, button[id$='-siblings_num-btn']").click(function() {
-    $("#nonsurviving_siblings_num, input[id$='-siblings_num']").change(function() {
+    $("#nonsurviving_siblings_num, select[id$='-siblings_num']").change(function() {
         nonsurvivingSiblingsNum = Number($('#nonsurviving_siblings_num').val());
-        var niblings = $('#nonsurviving_siblings-div').find("input[id$='-siblings_num']").get().slice(0, nonsurvivingSiblingsNum).map(elem => Number(elem.value));
+        var niblings = $('#nonsurviving_siblings-div').find("select[id$='-siblings_num']").get().slice(0, nonsurvivingSiblingsNum).map(elem => Number(elem.value));
         var max = Math.max(...niblings);
         nonSurvivingSiblings = Boolean(nonsurvivingSiblingsNum && max);
         siblings = survivingSiblings || nonSurvivingSiblings;
@@ -161,7 +150,6 @@ function updateNonsurvivingSiblings() {
 };
 
 function updateGrandparents() {
-    //$('#grandparents_num-btn').click(function() {
     $('#grandparents_num').change(function() {
         grandparents = Boolean(Number($('#grandparents_num').val()));
         displayAuntuncles();
