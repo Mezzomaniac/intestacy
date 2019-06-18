@@ -54,6 +54,10 @@
         </tfoot>
     </table>
 </div>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    {{ form.value.label }} $ {{ form.value(size=15) }} {{ form.submit() }}
+</form>
 <aside><p>
     Can you rely on this information? Click here to find out.
 </p></aside>

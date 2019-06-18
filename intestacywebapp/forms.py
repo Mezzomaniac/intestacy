@@ -257,6 +257,15 @@ class BeneficiariesForm(FlaskForm):
         #super().__init__(**kwargs)
         #self.spouse.survived.label.text = self.spouse.survived.label.text.format('a spouse')
 
+class RecalculateForm(FlaskForm):
+    value = MoneyField(
+        'Re-calculate with a different value:', 
+        [InputRequired('Please type a number'), NumberRange(
+            min=1, 
+            message='Estate value must be at least $1.00')],
+        render_kw={'min': '1'})
+            
+    submit = SubmitField('Go')
 
 
 '''def questions2a_form_builder(defacto_rels):

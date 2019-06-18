@@ -1,5 +1,3 @@
-// TODO: Make JS-displayed fields remain visible after the form is invalidly submitted
-
 var spouse = false;
 var defacto = false;
 var partner = false;
