@@ -4,10 +4,16 @@
         <meta charset="UTF-8">
         {% if title %}
         <title>{{ title }} - Intestacy Calculator WA</title>
+        <meta name="description" content="{{ title }}">
         {% else %}
         <title>Intestacy Calculator WA</title>
         {% endif %}
+        <meta name="author" content="Jeremy Thomas London">
+        {% block keywords %}
+        <meta name="keywords" content="administration, administration act 1903, administrator, calculate, calculator, deceased, distribute, distribution, entitlement, intestacy, law, share, wa, western australia, will">
+        {% endblock %}
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
         {% block scripts %}{% endblock %}
     </head>
     
@@ -22,15 +28,8 @@
             </nav>
             <hr>
         </header>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
+        <main role="main">
         {% block content %}{% endblock %}
+        </main>
     </body>
 </html>
