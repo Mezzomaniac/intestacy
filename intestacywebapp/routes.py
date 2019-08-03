@@ -1,10 +1,8 @@
-import datetime
-
 from flask import redirect, render_template, url_for#, flash, g, request, session
 
 from intestacywebapp import app
 from intestacywebapp.forms import EstateForm, BeneficiariesForm, RecalculateForm
-from intestacywebapp import functions
+from intestacywebapp import data, processing, session_interface, utils
 from intestacywebapp import tests
 
 ACT_URL = "https://www.legislation.wa.gov.au/legislation/statutes.nsf/RedirectURL?OpenAgent&query=mrdoc_37039.htm#_Toc493060114"
@@ -23,7 +21,7 @@ def test():
     return redirect(url_for('index'))
     
     return render_template('distribution.html', title='Test', 
-    estate=tests.estate, dollar=functions.money_fmt)
+    estate=tests.estate, dollar=utils.money_fmt)
     
     form = BeneficiariesForm()
     specified_items = {
@@ -44,11 +42,11 @@ def test2():
 @app.route('/calculate', methods=['GET', 'POST'])
 @app.route('/calculate/estate', methods=['GET', 'POST'])
 def calculate():
-    functions.reset_session()
+    session_interface.reset_session()
     form = EstateForm()
     if form.validate_on_submit():
-        functions.update_session(form.data)
-        functions.set_specified_items(form.deathdate.data)
+        session_interface.update_session(form.data)
+        session_interface.set_specified_items(form.deathdate.data)
         # TODO: compare deathdate to date of 2002 amendments
         return redirect(url_for('beneficiaries'))
     return render_template('form.html', title='Calculate Intestacy - Estate Details', form=form)
@@ -57,12 +55,12 @@ def calculate():
 def beneficiaries():
     form = BeneficiariesForm()
     if form.validate_on_submit():
-        functions.update_session(form.data)
+        session_interface.update_session(form.data)
         return redirect(url_for('distribution'))
-    deathdate = functions.load_from_session('deathdate')
-    fam_ct_am_act_02 = deathdate >= functions.FAM_CT_AM_ACT_02
-    specified_items = functions.load_from_session('specified_items')
-    value = functions.load_from_session('value')
+    deathdate = session_interface.load_from_session('deathdate')
+    fam_ct_am_act_02 = deathdate >= data.FAM_CT_AM_ACT_02
+    specified_items = session_interface.load_from_session('specified_items')
+    value = session_interface.load_from_session('value')
     return render_template('form.html', 
         title="Calculate Intestacy - Beneficiaries' Details", 
         form=form, 
@@ -75,9 +73,9 @@ def beneficiaries():
 def distribution():
     form = RecalculateForm()
     if form.validate_on_submit():
-        functions.update_session(form.data)
-    estate = functions.calculate_distribution(**functions.load_session())
+        session_interface.update_session(form.data)
+    estate = processing.calculate_distribution(**session_interface.load_session())
     # TODO: Also say whether a grant of LoA is required to get $ from a bank (AA s139)
     return render_template('distribution.html', title='Distribution', 
-    estate=estate, dollar=functions.money_fmt, form=form)
+    estate=estate, dollar=utils.money_fmt, form=form)
     # TODO: Enable saving a set of beneficiaries to be recalculated with a different net value
