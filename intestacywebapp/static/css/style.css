@@ -29,6 +29,12 @@ nav>a {
 	font-size: 1.3rem;
 }
 
+main {
+	max-width: 70ch;
+	padding: 1.5ch;
+	margin: auto;
+}
+
 .main-form {
 	background: BurlyWood;
 	padding: 0.6rem;
