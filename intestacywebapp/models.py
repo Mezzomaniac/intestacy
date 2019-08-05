@@ -4,6 +4,8 @@ from fractions import Fraction
 
 from flask import json
 
+from intestacywebapp import data
+
 """from . import db
 from .functions import ordinal_fmt
 
@@ -80,18 +82,6 @@ class DeFacto(Relative):
         return super().__repr__()[:-1] + f', length={self.length})'
 
 class Estate:
-    SPECIFIED_ITEMS = {datetime.date(1997, 12, 15):
-           {'ITEM_2': Decimal(50000),
-            'ITEM_3A_AND_B': Decimal(75000),
-            'ITEM_3BI': Decimal(6000),
-            'ITEM_6': Decimal(6000)}#,
-       #datetime.date(date Administration Act passes):
-           #{'ITEM_2': 435000,
-            #'ITEM_3A_AND_B': 650000,
-            #'ITEM_3BI': 52000,
-            #'ITEM_6': 52000}
-       }
-    # TODO: After Administration Amendment Act passes, automatically check for new orders under s 14A Administration Act
     
     def __init__(self, deathdate:datetime.date, value:Decimal):
         self.deathdate = deathdate
@@ -141,13 +131,13 @@ class Estate:
             yield self.crown
 
     def set_specified_items(self):
-        for date, amounts in sorted(self.SPECIFIED_ITEMS.items()):
+        for date, amounts in sorted(data.SPECIFIED_ITEMS.items()):
             if self.deathdate >= date:
-                self.specified_items = amounts
-                for item, amount in amounts.items():
+                self.specified_items = {item.upper(): Decimal(amount) for  item, amount in amounts}
+                for item, amount in self.specified_items.items():
                     setattr(self, item, amount)
                 return
-        raise ValueError(f'Date of death must not be earlier than {min(self.SPECIFIED_ITEMS):%-d %B %Y}')
+        raise ValueError(f'Date of death must not be earlier than {min(data.SPECIFIED_ITEMS):%-d %B %Y}')
 
     def to_json(self):
         return json.dumps(self, cls=MyEncoder)
