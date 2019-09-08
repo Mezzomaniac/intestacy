@@ -5,7 +5,7 @@ from wtforms import FieldList, FormField, RadioField, SelectField, StringField, 
 from wtforms.fields.html5 import DateField, DecimalField, IntegerField
 from wtforms.validators import InputRequired, NumberRange, ValidationError
 
-from intestacywebapp.functions import ordinal_fmt
+from intestacywebapp.utils import ordinal_fmt
 
 
 class MoneyField(DecimalField):
@@ -129,10 +129,9 @@ class EstateForm(FlaskForm):
     
     def validate_deathdate(form, field):
         if field.data < datetime.date(1997, 12, 15):
-            raise ValidationError('''Sorry, we don't currently deal with death dates before 15 December 1997, when death duties were abolished in WA.
-If this missing feature is important to you, please let us know by sending us feedback.''')
-#<time datetime="1997-12-15">15 December 1997</time>
-#<a href="mailto:jeremylondon@outlook.com.au?subject=Intestacy%20Calculator">sending us feedback.</a>
+            raise ValidationError('''Sorry, we don't currently deal with death dates before <time datetime="1997-12-15">15 December 1997</time>, when death duties were abolished in WA.
+If this missing feature is important to you, please let us know by <a href="mailto:jeremylondon@outlook.com.au?subject=Intestacy%20Calculator">sending us feedback.</a>.''')
+
 
 class BeneficiariesForm(FlaskForm):
     #spouse = FormField(RelativeForm, 'Spouse')

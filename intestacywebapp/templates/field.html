@@ -25,6 +25,8 @@
 {% endif %}
 <br>
 {% for error in field.errors %}
+{% autoescape false %}
 <span style="color: red;">{{ error }}</span>
+{% endautoescape %}
 {% endfor %}
 {% endif %}
