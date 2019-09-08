@@ -3,7 +3,7 @@ from flask import redirect, render_template, url_for#, flash, g, request, sessio
 from intestacywebapp import app
 from intestacywebapp.forms import EstateForm, BeneficiariesForm, RecalculateForm
 from intestacywebapp import data, processing, session_interface, utils
-from intestacywebapp import tests
+from intestacywebapp import _tests
 
 ACT_URL = "https://www.legislation.wa.gov.au/legislation/statutes.nsf/RedirectURL?OpenAgent&query=mrdoc_37039.htm#_Toc493060114"
 
