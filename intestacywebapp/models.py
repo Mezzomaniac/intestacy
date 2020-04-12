@@ -320,7 +320,8 @@ class Estate:
             if relative.survived:
                 relative.fraction = fraction
                 relative.share = share
-            issue = len(relative.issue)
-            for child in relative.issue:
-                child.fraction = fraction / issue
-                child.share = share / issue
+                        else:
+                issue = len(relative.issue)
+                for child in relative.issue:
+                    child.fraction = fraction / issue
+                    child.share = share / issue
