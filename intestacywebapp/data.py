@@ -6,7 +6,7 @@ SPECIFIED_ITEMS = {
         'item_3a_and_b': 75000, 
         'item_3bi': 6000, 
         'item_6': 6000}#, 
-    #datetime.date(date Administration Act passes): 
+    #datetime.date(date Administration Amendment Act passes): 
         #{'item_2': 435000, 
         #'item_3a_and_b': 650000, 
         #'item_3bi': 52000, 
