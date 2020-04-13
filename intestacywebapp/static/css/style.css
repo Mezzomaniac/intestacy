@@ -1,10 +1,14 @@
 html {
 	background: seashell;
-	font: 20px/1.5 arial;
+	font: 12px/1.5 arial;
 }
 
 #creator {
 	font-size: 1rem;
+}
+
+#version {
+	font-size: 0.7rem;
 }
 
 address {

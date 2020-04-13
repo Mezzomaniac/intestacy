@@ -10,7 +10,7 @@ ACT_URL = "https://www.legislation.wa.gov.au/legislation/statutes.nsf/RedirectUR
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', title='Home', version=app.config['VERSION'])
+    return render_template('index.html', title='Home')
 
 @app.route('/act')
 def act():
