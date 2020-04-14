@@ -170,7 +170,7 @@ function displayParents() {
 };
 
 function displaySiblings() {
-    var parentsShare = parents *     specifiedItems['item_3bi'];
+    var parentsShare = parents * specifiedItems['item_3bi'];
     var partnerShare = partner * (specifiedItems['item_3a_and_b'] + parentsShare);
     criteria = !issue && value > partnerShare + parentsShare;
     $('.siblings').prop('hidden', !criteria);
