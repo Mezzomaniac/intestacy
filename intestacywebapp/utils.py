@@ -16,6 +16,3 @@ def ordinal_fmt(n):
 def money_fmt(number):
     quantized = number.quantize(Decimal('.01'))
     return f'${quantized:,.2f}'
-
-
-
