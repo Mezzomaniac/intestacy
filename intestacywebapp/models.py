@@ -312,7 +312,7 @@ class Estate:
                 defacto.notes = notes
         
     def distribute_to_descendible_relatives(self, relatives, share, fraction=Fraction(1)):
-        portions =         getattr(self, f'eligible_{relatives}')
+        portions = getattr(self, f'eligible_{relatives}')
         fraction /= portions
         share /= portions
         
@@ -320,7 +320,7 @@ class Estate:
             if relative.survived:
                 relative.fraction = fraction
                 relative.share = share
-                        else:
+            else:
                 issue = len(relative.issue)
                 for child in relative.issue:
                     child.fraction = fraction / issue
