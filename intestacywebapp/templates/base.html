@@ -24,7 +24,9 @@
                 <a href="{{ url_for('index') }}">Home</a>
                 <a href="{{ url_for('calculate') }}">Calculate</a>
                 <a href="{{ url_for('act') }}" rel="external" target="_blank"><cite><i>Administration Act 1903</i></cite> (WA)</a>
+                {% if config['TESTING'] %}
                 <a href="{{ url_for('test') }}">test</a>
+                {% endif %}
             </nav>
             <hr>
         </header>

@@ -1,4 +1,4 @@
-from flask import redirect, render_template, url_for#, flash, g, request, session
+from flask import abort, config, redirect, render_template, url_for#, flash, g, request, session
 
 from intestacywebapp import app
 from intestacywebapp.forms import EstateForm, BeneficiariesForm, RecalculateForm
@@ -18,6 +18,8 @@ def act():
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
+    if not app.config['TESTING']:
+        abort(403)
     return redirect(url_for('index'))
     
     return render_template('distribution.html', title='Test', 
@@ -34,6 +36,8 @@ def test():
 
 @app.route('/test2', methods=['GET', 'POST'])
 def test2():
+    if not app.config['TESTING']:
+        abort(403)
     form = TestForm()
     if form.validate_on_submit():
         return redirect(url_for('test1'))
