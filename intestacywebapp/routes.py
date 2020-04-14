@@ -1,4 +1,4 @@
-from flask import abort, config, redirect, render_template, url_for#, flash, g, request, session
+from flask import abort, redirect, render_template, url_for#, flash, g, request, session
 
 from intestacywebapp import app
 from intestacywebapp.forms import EstateForm, BeneficiariesForm, RecalculateForm
@@ -23,7 +23,7 @@ def test():
     return redirect(url_for('index'))
     
     return render_template('distribution.html', title='Test', 
-    estate=tests.estate, dollar=utils.money_fmt)
+    estate = _tests.estate, dollar=utils.money_fmt)
     
     form = BeneficiariesForm()
     specified_items = {
