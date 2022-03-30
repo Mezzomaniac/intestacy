@@ -16,11 +16,10 @@ address {
 }
 
 header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9em;
 	font-size: 0.75rem;
-}
-
-nav>a {
-	margin: 1.2em;
 }
 
 #index {
@@ -34,7 +33,7 @@ nav>a {
 }
 
 main {
-	max-width: 70ch;
+	max-width: 100ch;
 	padding: 1.5ch;
 	margin: auto;
 }
@@ -87,6 +86,11 @@ input[type="submit"] {
 
 input:invalid {
 	border: 0.175em dashed red;
+}
+
+.error {
+    font-size: 0.75em;
+    color: red;
 }
 
 /*button {
