@@ -5,8 +5,6 @@ from intestacywebapp.forms import EstateForm, BeneficiariesForm, RecalculateForm
 from intestacywebapp import data, processing, session_interface, utils
 from intestacywebapp import _tests
 
-ACT_URL = "https://www.legislation.wa.gov.au/legislation/statutes.nsf/RedirectURL?OpenAgent&query=mrdoc_37039.htm#_Toc493060114"
-
 @app.route('/')
 @app.route('/index')
 def index():
@@ -14,24 +12,24 @@ def index():
 
 @app.route('/act')
 def act():
-    return redirect(ACT_URL)
+    return redirect(data.ACT_URL)
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     if not app.config['TESTING']:
         abort(403)
     return redirect(url_for('index'))
-    
-    return render_template('distribution.html', title='Test', 
+
+    return render_template('distribution.html', title='Test',
     estate = _tests.estate, dollar=utils.money_fmt)
-    
+
     form = BeneficiariesForm()
     specified_items = {
         'item_2': 50000,
-        'item_3a_and_b': 75000, 
-        'item_3bi': 6000, 
+        'item_3a_and_b': 75000,
+        'item_3bi': 6000,
         'item_6': 6000}
-    return render_template('form.html', title="Test", form=form, scripts=True, 
+    return render_template('form.html', title="Test", form=form, scripts=True,
         specified_items=specified_items, value=80000)
 
 @app.route('/test2', methods=['GET', 'POST'])
@@ -65,11 +63,11 @@ def beneficiaries():
     fam_ct_am_act_02 = deathdate >= data.FAM_CT_AM_ACT_02
     specified_items = session_interface.load_from_session('specified_items')
     value = session_interface.load_from_session('value')
-    return render_template('form.html', 
-        title="Calculate Intestacy - Beneficiaries' Details", 
-        form=form, 
+    return render_template('form.html',
+        title="Calculate Intestacy - Beneficiaries' Details",
+        form=form,
         scripts=True,
-        specified_items=specified_items, 
+        specified_items=specified_items,
         value=value,
         fam_ct_am_act_02=fam_ct_am_act_02)
 
@@ -80,6 +78,6 @@ def distribution():
         session_interface.update_session(form.data)
     estate = processing.calculate_distribution(**session_interface.load_session())
     # TODO: Also say whether a grant of LoA is required to get $ from a bank (AA s139)
-    return render_template('distribution.html', title='Distribution', 
+    return render_template('distribution.html', title='Distribution',
     estate=estate, dollar=utils.money_fmt, form=form)
     # TODO: Enable saving a set of beneficiaries to be recalculated with a different net value
