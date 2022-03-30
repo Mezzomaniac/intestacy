@@ -9,12 +9,12 @@
 </ol>
 {% elif field.type == "FormField" %}
 <fieldset>
-{% for subfield in field %}
+    {% for subfield in field %}
     <div>
         {% set field = subfield %}
         {% include "field.html" %}
     </div>
-{% endfor %}
+    {% endfor %}
 </fieldset>
 {% elif field.type not in ("CSRFTokenField", "SubmitField") %}
 {{ field.label }}<br>
@@ -25,6 +25,6 @@
 {% endif %}
 <br>
 {% for error in field.errors %}
-<span style="color: red;">{{ error|safe }}</span>
+<span class="error">{{ error|safe }}</span>
 {% endfor %}
 {% endif %}
