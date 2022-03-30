@@ -7,6 +7,7 @@
     <h2>Value of estate: {{ dollar(estate.value) }}</h2>
     <h3>Based on the information provided, the beneficiaries of the intestate estate are as follows:</h3>
     <table>
+        <!--TODO: Add a <caption>-->
         <colgroup>
             <col class="col-major beneficiary">
             <col class="col-minor name">
@@ -19,6 +20,7 @@
         </colgroup>
         <thead>
             <tr>
+                <!--TODO: Is there a better alternative to the <br>s, since they aren't semantic?-->
                 <th scope="col" class="col-major beneficiary">Beneficiary</th>
                 <th scope="col" class="col-minor name">Name</th>
                 <th scope="col" class="col-minor fixed">Fixed sum <br>entitlement</th>
