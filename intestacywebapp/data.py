@@ -1,18 +1,20 @@
 import datetime
 
+ACT_URL = "https://www.legislation.wa.gov.au/legislation/prod/filestore.nsf/FileURL/mrdoc_44687.htm/$FILE/Administration%20Act%201903%20-%20%5B12-d0-00%5D.html#_Toc99367207"
+#TODO: Automatically update the Act link when a new version is published
+
 SPECIFIED_ITEMS = {
-    datetime.date(1977, 3, 1): 
-        {'item_2': 50000, 
-        'item_3a_and_b': 75000, 
-        'item_3bi': 6000, 
-        'item_6': 6000}#, 
-    #datetime.date(date Administration Amendment Act passes): 
-        #{'item_2': 435000, 
-        #'item_3a_and_b': 650000, 
-        #'item_3bi': 52000, 
-        #'item_6': 52000}
+    datetime.date(1997, 12, 15):
+        {'item_2': 50000,
+        'item_3a_and_b': 75000,
+        'item_3bi': 6000,
+        'item_6': 6000},
+    datetime.date(2022, 3, 30):
+        {'item_2': 472000,
+        'item_3a_and_b': 705000,
+        'item_3bi': 56500,
+        'item_6': 56500}
     }
-# TODO: Only start from 15/12/97, when death duties were abolished
 # 21/09/02: parents need not be a mother and father
 # TODO: After Administration Amendment Act passes, automatically check for new orders under s 14A Administration Act
 
