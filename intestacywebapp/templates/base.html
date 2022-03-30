@@ -12,24 +12,24 @@
         {% block keywords %}
         <meta name="keywords" content="administration, administration act 1903, administrator, calculate, calculator, death, deceased, distribute, distribution, entitlement, intestacy, intestate, law, share, wa, western australia, will">
         {% endblock %}
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
         {% block scripts %}{% endblock %}
     </head>
-    
+
     <body>
         <header>
-            Intestacy Calculator WA:
+            <div>Intestacy Calculator WA:</div>
             <nav>
-                <a href="{{ url_for('index') }}">Home</a>
-                <a href="{{ url_for('calculate') }}">Calculate</a>
-                <a href="{{ url_for('act') }}" rel="external" target="_blank"><cite><i>Administration Act 1903</i></cite> (WA)</a>
+                <div><a href="{{ url_for('index') }}">Home</a></div>
+                <div><a href="{{ url_for('calculate') }}">Calculate</a></div>
+                <div><a href="{{ url_for('act') }}" rel="external" target="_blank"><cite>Administration Act 1903</cite> (WA)</a></div>
                 {% if config['TESTING'] %}
-                <a href="{{ url_for('test') }}">test</a>
+                <div><a href="{{ url_for('test') }}">test</a></div>
                 {% endif %}
             </nav>
-            <hr>
         </header>
+        <hr>
         <main role="main">
         {% block content %}{% endblock %}
         </main>
