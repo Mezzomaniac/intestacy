@@ -15,7 +15,8 @@ SPECIFIED_ITEMS = {
         'item_3bi': 56500,
         'item_6': 56500}
     }
-# 21/09/02: parents need not be a mother and father
-# TODO: After Administration Amendment Act passes, automatically check for new orders under s 14A Administration Act
+# TODO: 21/09/02: parents need not be a mother and father
+# TODO: 07/08/13: before this date, Indigenous intestacies are dealt with under the Aboriginal Affairs Planning Authority Act 1972 (WA) instead
+# TODO: Automatically check for new orders under s 14A Administration Act
 
 FAM_CT_AM_ACT_02 = datetime.date(2002, 12, 1)
