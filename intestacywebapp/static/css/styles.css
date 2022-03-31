@@ -1,47 +1,48 @@
 html {
 	background: seashell;
-	font: 12px/1.5 arial;
+	max-width: 100ch;
+	font: 13px/1.5 arial;
+	margin: auto;
 }
 
 #creator {
-	font-size: 1rem;
+	font-size: 1em;
 }
 
 #version {
-	font-size: 0.7rem;
+	font-size: 0.9em;
 }
 
 address {
-	font-size: 0.9rem;
+	font-size: 0.9em;
 }
 
 header {
     display: flex;
     flex-wrap: wrap;
     gap: 0.9em;
-	font-size: 0.75rem;
+	font-size: 0.9em;
 }
 
 #index {
-	padding-top: 1.6rem;
+	padding-top: 1.6em;
+	font-size: 1.2em;
 }
 
 #index li {
-	margin: 1.3rem;
-	padding: 1rem;
-	font-size: 1.3rem;
+	margin: 1.5em;
+	font-size: 1.15em;
 }
 
 main {
-	max-width: 100ch;
-	padding: 1.5ch;
-	margin: auto;
+	margin: 1.5ch;
 }
 
 .main-form {
 	background: BurlyWood;
-	padding: 0.6rem;
-	font-size: 1.7rem;
+	max-width: 70ch;
+	padding: 0.6em;
+	font-size: 1.7em;
 }
 
 form > div {
@@ -104,7 +105,7 @@ input:invalid {
 }*/
 
 h3 {
-	font-size: 1.3rem;
+	font-size: 1.3em;
 }
 
 table {
@@ -118,16 +119,16 @@ table {
 	border-color: dimgrey;
 	border-width: 0.8em;
 	border-style: solid;
-	font-size: 1.5rem;
+	font-size: 1.5em;
 	line-height: normal;
 	text-align: center;
 }
 
 th, td {
-	margin: 1.2rem;
-	padding: 1.2rem;
+	margin: 1.2em;
+	padding: 1.rem;
 	border-color: darkgrey;
-	border-width: 0.8rem;
+	border-width: 0.8em;
 	border-style: solid;
 }
 
