@@ -1,6 +1,7 @@
 import datetime
 
 from flask_wtf import FlaskForm
+from markupsafe import Markup
 from wtforms import FieldList, FormField, RadioField, SelectField, StringField, SubmitField
 from wtforms.fields.html5 import DateField, DecimalField, IntegerField
 from wtforms.validators import InputRequired, NumberRange, ValidationError
@@ -54,6 +55,7 @@ class RelativeNumberField(SelectField):
             ordinal += ' '
         # TODO: Use {{ loop.index }} for num
         label = f"How many {relative} did the {ordinal}{origin} have at the date of the Deceased’s death?"
+        label = Markup(label)  # to prevent escaping span tag in de factos label
         if validators is None:
             validators = [InputRequired('Please type a number'), NumberRange(min=0)]
         choices = [(n, str(n)) for n in range(max + 1)]
