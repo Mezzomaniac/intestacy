@@ -13,15 +13,20 @@
     <address>
         Please report any bugs to <a href="mailto:jeremylondon@outlook.com.au?subject=Intestacy%20Calculator">jeremylondon@outlook.com.au</a>
     </address>
-    <p id="changelog"><!--TODO--></p>
+    <p id="changelog"><!--TODO-->
+        <h5>Recent updates:</h5>
+        <ul>
+            <li><time datetime="2022-03-30">30 March 2022</time>: Incorporated amendments made by the <cite><a href="https://www.legislation.wa.gov.au/legislation/prod/filestore.nsf/FileURL/mrdoc_44684.htm/$FILE/Administration%20Amendment%20Act%202022%20-%20%5B00-00-00%5D.html" rel="external" target="_blank">Administration Amendment Act 2022</cite> (WA)</a> <span class="external-warning">(opens external link in a new tab or window)</span></li>
+        </ul>
+    </p>
 </div>
 <hr>
 <div id="index">
-    What would you like to do?
+    <h4>What would you like to do?</h4>
     <ul>
         <li><a href="{{ url_for('calculate') }}">Calculate who receives a share of a deceased estate where the deceased died intestate (without a valid will) and how much each beneficiary receives
         </a></li>
-        <li>View relevant sections of the <cite><a href="{{ url_for('act') }}" rel="external" target="_blank">Administration Act 1903</cite> (WA)</a> (opens external link in a new tab or window)</li>
+        <li>View relevant sections of the <cite><a href="{{ url_for('act') }}" rel="external" target="_blank">Administration Act 1903</cite> (WA)</a> <span class="external-warning">(opens external link in a new tab or window)</span></li>
     </ul>
 </div>
 {% endblock %}

@@ -25,13 +25,17 @@ header {
 }
 
 #index {
-	padding-top: 1.6em;
-	font-size: 1.2em;
+	margin-top: 1.6em;
+	font-size: 1.15em;
 }
 
 #index li {
 	margin: 1.5em;
 	font-size: 1.15em;
+}
+
+.external-warning {
+	font-size: 0.65em;
 }
 
 main {
@@ -178,3 +182,8 @@ ul.notes>li {
 	font-weight: 1.2em;
 	font-size: 1.3em;
 }
+
+/*TODO:
+thead, .beneficiary {
+	position: absolute;
+}*/

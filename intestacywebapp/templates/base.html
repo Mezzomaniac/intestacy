@@ -22,7 +22,7 @@
             <div>Intestacy Calculator WA:</div>
             <div><a href="{{ url_for('index') }}">Home</a></div>
             <div><a href="{{ url_for('calculate') }}">Calculate</a></div>
-            <div><a href="{{ url_for('act') }}" rel="external" target="_blank"><cite>Administration Act 1903</cite> (WA)</a></div>
+            <div><a href="{{ url_for('act') }}" rel="external" target="_blank"><cite>Administration Act 1903</cite> (WA)</a> <span class="external-warning">(external link)</span></div>
             {% if config['TESTING'] %}
             <div><a href="{{ url_for('test') }}">test</a></div>
             {% endif %}
