@@ -10,75 +10,72 @@ from intestacywebapp.utils import ordinal_fmt
 
 
 class MoneyField(DecimalField):
+    
     def __init__(self, label='', validators=[], **kwargs):
         kwargs.setdefault('render_kw', {}).setdefault('step', '0.01')
         super().__init__(label, validators, **kwargs)
 
-#class RelativeForm(FlaskForm):
-    #class Meta:
-        #csrf = False
-
-    #survived = RadioField('Was the Deceased survived by {}?',
-        #validators=[InputRequired()],
-        #choices=[
-            #(0, 'No'),
-            #(1, 'Yes')],
-        #default=0,
-        #coerce=bool)
-    #name = StringField('(Optional) What is their name?')
-
-    '''def __init__(self, relative, **kwargs):
-        super().__init__(**kwargs)
-        self.survived.label.text = self.survived.label.text.format(relative)'''
 
 class DeFactoInfoForm(FlaskForm):
+    
     class Meta:
         csrf = False
 
     length = RadioField('How long did the de facto relationship last?',
-        #validators=[InputRequired()],
         choices=[
             (0, 'Less than 2 years'),
             (2, '2 or more but less than 5 years'),
             (5, '5 or more years')],
         default=0,
         coerce=int)
+        
     name = StringField(
         "(Optional) What is the de facto partner’s name?",
         render_kw={'placeholder': 'De Facto Partner'})
         # TODO: Number the placeholder text 'De Facto Partner 1' etc
 
+
 class RelativeNumberField(SelectField):
+    
     def __init__(self, relative='', num=None, origin='Deceased', validators=None, max=20, **kwargs):
+        
         ordinal = ordinal_fmt(num)
         if ordinal:
             ordinal += ' '
         # TODO: Use {{ loop.index }} for num
         label = f"How many {relative} did the {ordinal}{origin} have at the date of the Deceased’s death?"
         label = Markup(label)  # to prevent escaping span tag in de factos label
+        
         if validators is None:
             validators = [InputRequired('Please type a number'), NumberRange(min=0)]
+            
         choices = [(n, str(n)) for n in range(max + 1)]
+        
         kwargs.setdefault('render_kw', {}).setdefault('required', True)
         class_ = kwargs['render_kw'].get('class', '').split()
         if 'relative-number-field' not in class_:
             class_.append('relative-number-field')
         kwargs['render_kw']['class'] = ' '.join(class_)
+        
         super().__init__(label, validators=validators, default=0, choices=choices, coerce=int, **kwargs)
+
 
 def nonsurviving_relative_form_builder(origin, child):
 
     class NonsurvivingRelativeForm(FlaskForm):
+        
         class Meta:
             csrf = False
 
         name = StringField(
             f"(Optional) What is the non-surviving {origin}’s name?",
             render_kw={'placeholder': origin.title()})
+            
         issue_num = RelativeNumberField(
             'living children', origin=f'non-surviving {origin}',
             validators=[NumberRange(min=0)],
             render_kw={'required': False})
+            
         issue = FieldList(
             StringField(
                 f"(Optional) What is the surviving {child}’s name?",
@@ -87,19 +84,6 @@ def nonsurviving_relative_form_builder(origin, child):
 
     return NonsurvivingRelativeForm
 
-#class DeFactoForm(FlaskForm):
-    #class Meta:
-        #csrf = False
-
-    #number = FormField(RelativeNumberForm, 'De factos')
-    #defacto_rels = RelativeNumberField('de facto partners with whom the Deceased lived\
-#<span class="if-spouse" hidden>\
-#, during which time the Deceased did not live as the husband or wife of their spouse,\
-#</span>')
-    #defactos = FieldList(FormField(DeFactoInfoForm, 'De facto partner'),
-        #'De facto partners',
-        #min_entries=10,
-        #render_kw={'hidden': True})
 
 class TestForm(FlaskForm):
     a = StringField('string')
@@ -108,7 +92,9 @@ class TestForm(FlaskForm):
     def __init__(self, relative, **kwargs):
         super().__init__(**kwargs)
 
+
 class EstateForm(FlaskForm):
+    
     deathdate = DateField(
         'What is the date of death?',
         [InputRequired('Please enter a valid date')],
@@ -136,7 +122,7 @@ If this missing feature is important to you, please let us know by <a href="mail
 
 
 class BeneficiariesForm(FlaskForm):
-    #spouse = FormField(RelativeForm, 'Spouse')
+
     spouse_num = RadioField('Was the Deceased survived by a spouse?',
         validators=[InputRequired()],
         choices=[
@@ -151,6 +137,7 @@ class BeneficiariesForm(FlaskForm):
             'class': 'spouse if-spouse',
             'hidden': 'hidden',
             'placeholder': 'Spouse'})
+            
     defactos_num = RelativeNumberField('de facto partners with whom the Deceased lived\
 <span class="if-spouse" hidden>\
 , during which time the Deceased did not live as the husband or wife of their spouse,\
@@ -175,6 +162,7 @@ class BeneficiariesForm(FlaskForm):
         'Surviving children',
         render_kw={'class': 'issue, if-no-partner if-item2'},
         min_entries=20)
+        
     nonsurviving_issue_num = RelativeNumberField(
         'deceased children who left children',
         render_kw={'class': 'issue if-no-partner if-item2'})
@@ -208,6 +196,7 @@ class BeneficiariesForm(FlaskForm):
         'Surviving siblings',
         render_kw={'class': 'siblings'},
         min_entries=20)
+        
     nonsurviving_siblings_num = RelativeNumberField(
         'deceased siblings (including half-siblings) who left children',
         render_kw={'class': 'siblings'})
@@ -241,6 +230,7 @@ class BeneficiariesForm(FlaskForm):
         'Surviving aunts & uncles',
         render_kw={'class': 'auntuncles'},
         min_entries=40)
+        
     nonsurviving_auntuncles_num = RelativeNumberField(
         'deceased aunts and uncles (including half-blood relations) who left children',
         max=40,
@@ -254,11 +244,9 @@ class BeneficiariesForm(FlaskForm):
 
     submit = SubmitField('Calculate distribution')
 
-    #def __init__(self, **kwargs):
-        #super().__init__(**kwargs)
-        #self.spouse.survived.label.text = self.spouse.survived.label.text.format('a spouse')
 
 class RecalculateForm(FlaskForm):
+    
     value = MoneyField(
         'Re-calculate with a different value:',
         [InputRequired('Please type a number'), NumberRange(
@@ -268,25 +256,3 @@ class RecalculateForm(FlaskForm):
 
     submit = SubmitField('Go')
 
-
-'''def questions2a_form_builder(defacto_rels):
-    class Questions3Form(FlaskForm):
-        pass
-
-    for i in range(defacto_rels):
-        setattr(Questions3Form, 'defacto_{}'.format(i), DecimalField('De facto relationship {}'.format(i+1)))
-
-    setattr(Questions3Form, 'submit', SubmitField('Next'))
-    return Questions3Form()
-
-    #indexes = range(defacto_rels)
-
-    class Questions2AForm(FlaskForm):
-        defactos = FieldList(FormField(DeFactoForm, 'De facto partner'), 'De facto partners', min_entries=defacto_rels)
-        submit = SubmitField('Next')
-
-    return Questions2AForm()
-
-    def __init__(self, defacto_rels, **kwargs):
-        self.defactos = FieldList(DecimalField('Length'), 'How many years did each de facto relationship last?', min_entries=defacto_rels)
-        super(Questions3Form, self).__init__(**kwargs)'''

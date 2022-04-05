@@ -25,6 +25,7 @@ def calculate_distribution(
     nonsurviving_auntuncles_num=0, 
     nonsurviving_auntuncles=[]
     ):
+    
     estate = Estate(deathdate, value)
     
     if spouse_num:

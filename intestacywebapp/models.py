@@ -6,29 +6,9 @@ from flask import json
 
 from intestacywebapp import data
 
-"""from . import db
-from .functions import ordinal_fmt
-
-class MonetaryAmount(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Numeric)
-
-class Relative(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    relation = db.Column(db.String, nullable=False)
-    deceased = db.Column(db.Boolean, nullable=False, default=False)
-    name = db.Column(db.String)
-    length = db.Column(db.Numeric)
-    share = db.Column(db.Numeric)
-    notes = db.Column(db.String)
-
-    def __repr__(self):
-        return f'<{self.relation}>'
-
-    def __str__(self):
-        return self.name or f'{ordinal_fmt(self.id)} {self.relation}'"""
 
 class MyEncoder(json.JSONEncoder):
+    
     def default(self, obj):
         if isinstance(obj, Decimal):
             return float(obj)
@@ -40,7 +20,9 @@ class MyEncoder(json.JSONEncoder):
             return vars(obj)
         return json.JSONEncoder.default(self, obj)
 
+
 class Relative:
+    
     def __init__(self, relationship:str, name:str='', survived=True):
         self.relationship = relationship
         self.name = name
@@ -63,7 +45,9 @@ class Relative:
     def to_json(self):
         return json.dumps(self, cls=MyEncoder)
 
+
 class DescendibleRelative(Relative):
+    
     def __init__(self, relationship:str, name:str='', survived=True, issue:list=[]):
         super().__init__(relationship, name, survived)
         self.issue = issue
@@ -71,7 +55,9 @@ class DescendibleRelative(Relative):
     def __repr__(self):
         return super().__repr__()[:-1] + f', issue={self.issue})'
 
+
 class DeFacto(Relative):
+    
     def __init__(self, relationship:str='De Facto Partner', name:str='', survived=True, length:int=0):
         super().__init__(relationship, name, survived)
         self.length = length
@@ -80,6 +66,7 @@ class DeFacto(Relative):
 
     def __repr__(self):
         return super().__repr__()[:-1] + f', length={self.length})'
+
 
 class Estate:
 

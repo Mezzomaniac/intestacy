@@ -43,14 +43,14 @@ main {
 }
 
 .main-form {
-	background: BurlyWood;
+	background: burlywood;
 	max-width: 70ch;
 	padding: 0.6em;
 	font-size: 1.7em;
 }
 
 form > div {
-	background: LightBlue;
+	background: lightblue;
 	margin: 0.7em;
 	padding: 0;
 }
@@ -98,15 +98,16 @@ input:invalid {
     color: red;
 }
 
-/*button {
+#submit {
 	font-size: 0.9em;
+	color: darkblue;
 	height: 1.2em;
 	margin: 1.1em;
 	border: 0.1em solid black;
 	border-radius: 100px;
 	background-color: silver;
 	padding: 0.5em 0.5em 1.5em 0.5em;
-}*/
+}
 
 #aboriginal-warning {
 	color: crimson;

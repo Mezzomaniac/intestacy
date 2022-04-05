@@ -45,7 +45,6 @@ def update_session(data):
 def set_specified_items(deathdate=None):
     if deathdate is None:
         deathdate = load_from_session('deathdate')
-    #deathdate = datetime.datetime.strptime(deathdate, '%Y-%m-%d').date()
     for date, amounts in reversed(sorted(SPECIFIED_ITEMS.items())):
         if deathdate >= date:
             update_session({'specified_items': amounts})
