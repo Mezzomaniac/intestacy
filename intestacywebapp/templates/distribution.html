@@ -5,6 +5,9 @@
 <div>
     <h2>Date of death: <time datetime="{{ estate.deathdate.strftime('%Y-%m-%d') }}">{{ estate.deathdate.strftime('%-d %B %Y') }}</time></h2>
     <h2>Value of estate: {{ dollar(estate.value) }}</h2>
+    {% if estate.aboriginal_warning %}
+    <p id="aboriginal-warning">WARNING: For intestate deaths before <time datetime="2013-08-07">7 August 2013</time> the estate may be distributed differently if the deceased was of Aboriginal descent.</p>
+    {% endif %}
     <h3>Based on the information provided, the beneficiaries of the intestate estate are as follows:</h3>
     <table>
         <!--TODO: Add a <caption>-->

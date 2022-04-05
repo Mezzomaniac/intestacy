@@ -108,8 +108,12 @@ input:invalid {
 	padding: 0.5em 0.5em 1.5em 0.5em;
 }*/
 
+#aboriginal-warning {
+	color: crimson;
+}
+
 h3 {
-	font-size: 1.3em;
+	font-size: 1.4em;
 }
 
 table {

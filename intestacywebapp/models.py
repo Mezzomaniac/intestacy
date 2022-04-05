@@ -86,7 +86,9 @@ class Estate:
     def __init__(self, deathdate:datetime.date, value:Decimal):
         self.deathdate = deathdate
         self.value = Decimal(value)
+        
         self.set_specified_items()
+        self.aboriginal_warning = deathdate < data.AAPA_AM_ACT_12
 
         self.spouse = None
         self.defactos = []
@@ -292,7 +294,7 @@ class Estate:
         portions = (self.eligible_spouse + bool(self.eligible_defactos))
         notes = ['Plus household chattels.']
         if fraction < 1 or portions > 1 or self.eligible_defactos > 1:
-            notes.append('May choose to receive home being lived in at date of death instead of monetary equivalent.')
+            notes.append('The deceased’s partner may choose to receive the home they were living in at the date of death instead of the monetary equivalent.')
         share /= portions
         fraction /= portions
         fixed /= portions
