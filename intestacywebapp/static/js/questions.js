@@ -1,3 +1,6 @@
+const value = Number.parseFloat(constants['value']);
+const specifiedItems = constants['specified_items'];
+const famCtAmAct02 = parseInt(constants['fam_ct_am_act_02']);
 var spouse = false;
 var defacto = false;
 var partner = false;

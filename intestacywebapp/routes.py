@@ -64,13 +64,11 @@ def beneficiaries():
     fam_ct_am_act_02 = deathdate >= data.FAM_CT_AM_ACT_02
     specified_items = session_interface.load_from_session('specified_items')
     value = session_interface.load_from_session('value')
+    jsconstants = {"specified_items": specified_items, "value": str(value), "fam_ct_am_act_02": int(fam_ct_am_act_02)}
     return render_template('form.html',
         title="Calculate Intestacy - Beneficiaries' Details",
         form=form,
-        scripts=True,
-        specified_items=specified_items,
-        value=value,
-        fam_ct_am_act_02=fam_ct_am_act_02)
+        jsconstants=jsconstants)
 
 @app.route('/calculate/distribution', methods=['GET', 'POST'])
 def distribution():
