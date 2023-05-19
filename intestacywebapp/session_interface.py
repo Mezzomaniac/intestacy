@@ -9,16 +9,19 @@ class JSONEncoder(json.JSONEncoder):
             return float(obj)
         elif isinstance(obj, datetime.date):
             return str(obj)
-        return json.JSONEncoder.default(self, obj)
-        
+        return super().default(self, obj)
+
 def jsonify(data):
     return json.dumps(data, cls=JSONEncoder)
 
 def unjsonify(data):
-    try:
-        return datetime.datetime.strptime(json.loads(data), '%Y-%m-%d').date()
-    except (ValueError, TypeError):
-        return json.loads(data, parse_float=Decimal)
+    result = json.loads(data, parse_float=Decimal)
+    for date_fmt in ('%Y-%m-%d', '%a, %d %b %Y %H:%M:S GMT'):  # handle version conflicts
+        try:
+            return datetime.datetime.strptime(result, date_fmt).date()
+        except (ValueError, TypeError):
+            pass
+    return result
 
 # TODO: Create class inheriting from flask SessionInterface
 
@@ -30,7 +33,7 @@ def reset_session():
 
 def update_session(data):
     '''Update session from form data.'''
-    
+
     excluded = ('csrf_token', 'submit')
     update = {}
     for key, value in data.items():
