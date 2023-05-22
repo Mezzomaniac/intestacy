@@ -1,4 +1,5 @@
-from flask import abort, redirect, render_template, url_for
+from flask import abort, redirect, render_template, request, url_for
+import git
 
 from intestacywebapp import app
 from intestacywebapp.forms import EstateForm, BeneficiariesForm, RecalculateForm
@@ -77,9 +78,17 @@ def distribution():
         session_interface.update_session(form.data)
     estate = processing.calculate_distribution(**session_interface.load_session())
     # TODO: Also say whether a grant of LoA is required to get $ from a bank (AA s139)
-    return render_template('distribution.html', 
+    return render_template('distribution.html',
         title='Distribution',
-        estate=estate, 
-        dollar=utils.money_fmt, 
+        estate=estate,
+        dollar=utils.money_fmt,
         form=form)
     # TODO: Enable saving a set of beneficiaries to be recalculated with a different net value
+
+@app.post('/update_server')
+def webhook():
+    if request.method != 'POST':
+        return 'Wrong event type', 400
+    repo = git.Repo('https://github.com/Mezzomaniac/intestacy')
+    repo.remotes.origin.pull()
+    return 'Updated PythonAnywhere successfully'
