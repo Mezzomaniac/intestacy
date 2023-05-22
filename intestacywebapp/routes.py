@@ -89,6 +89,6 @@ def distribution():
 def webhook():
     if request.method != 'POST':
         return 'Wrong event type', 400
-    repo = git.Repo('https://github.com/Mezzomaniac/intestacy')
+    repo = git.Repo('/home/themezj/intestacy')
     repo.remotes.origin.pull()
     return 'Updated PythonAnywhere successfully'
