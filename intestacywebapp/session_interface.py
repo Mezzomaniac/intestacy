@@ -16,7 +16,7 @@ def jsonify(data):
 
 def unjsonify(data):
     result = json.loads(data, parse_float=Decimal)
-    for date_fmt in ('%Y-%m-%d', '%a, %d %b %Y %H:%M:S GMT'):  # handle version conflicts
+    for date_fmt in ('%Y-%m-%d', '%a, %d %b %Y %H:%M:%S GMT'):  # handle version conflicts
         try:
             return datetime.datetime.strptime(result, date_fmt).date()
         except (ValueError, TypeError):
