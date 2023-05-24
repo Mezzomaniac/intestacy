@@ -89,7 +89,7 @@ def distribution():
 def webhook():
     if request.method != 'POST':
         return 'Wrong event type', 400
-    if (signature_header := request.headers.get('x-hub-signature-256', None)) is not None:
+    if (signature_header := request.headers.get('x-hub-signature-256', None)) is None:
         return 'x-hub-signature-256 header is missing!', 401
     if not utils.verify_signature(app.config['SECRET_KEY'], signature_header, request.data):
         return 'Request signatures did not match!', 403
