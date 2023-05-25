@@ -1,7 +1,8 @@
 import os
+import secrets
 
 class Config:
-    SECRET_KEY = os.getenv("SECRET_KEY", os.urandom(16))
+    SECRET_KEY = os.environ.get('SECRET_KEY', secrets.token_hex())
     VERSION = '1.2.5'
 
     #TESTING = True

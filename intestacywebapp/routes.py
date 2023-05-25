@@ -94,6 +94,6 @@ def webhook():
     if not utils.verify_signature(app.config['SECRET_KEY'], signature_header, request.data):
         return 'Request signatures did not match!', 403
     # TODO: Expand checks: see https://medium.com/@aadibajpai/deploying-to-pythonanywhere-via-github-6f967956e664
-    repo = git.Repo('/home/themezj/intestacy.git')
+    repo = git.Repo('/home/themezj/intestacy/.git')
     repo.remotes.origin.pull()
     return 'Updated PythonAnywhere successfully'
