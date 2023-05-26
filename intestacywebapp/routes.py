@@ -1,4 +1,5 @@
-from flask import abort, redirect, render_template, url_for
+from flask import abort, redirect, render_template, request, url_for
+import git
 
 from intestacywebapp import app
 from intestacywebapp.forms import EstateForm, BeneficiariesForm, RecalculateForm
@@ -83,9 +84,22 @@ def distribution():
         session_interface.update_session({field: data for field, data in form.data.items() if data})
     estate = processing.calculate_distribution(**session_interface.load_session())
     # TODO: Also say whether a grant of LoA is required to get $ from a bank (AA s139)
-    return render_template('distribution.html', 
+    return render_template('distribution.html',
         title='Distribution',
-        estate=estate, 
-        dollar=utils.money_fmt, 
+        estate=estate,
+        dollar=utils.money_fmt,
         form=form)
     # TODO: Enable saving a set of beneficiaries to be recalculated with a different net value
+
+@app.post('/update_server')
+def webhook():
+    if request.method != 'POST':
+        return 'Wrong event type', 400
+    if (signature_header := request.headers.get('x-hub-signature-256', None)) is None:
+        return 'x-hub-signature-256 header is missing!', 401
+    if not utils.verify_signature(app.config['SECRET_KEY'], signature_header, request.data):
+        return 'Request signatures did not match!', 403
+    # TODO: Expand checks: see https://medium.com/@aadibajpai/deploying-to-pythonanywhere-via-github-6f967956e664
+    repo = git.Repo('/home/themezj/intestacy/.git')
+    repo.remotes.origin.pull()
+    return 'Updated PythonAnywhere successfully'

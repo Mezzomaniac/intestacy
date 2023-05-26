@@ -1,10 +1,11 @@
 import os
+import secrets
 
 class Config:
-    SECRET_KEY = os.urandom(16)
-    VERSION = '1.2.1'
-    
+    SECRET_KEY = os.environ.get('SECRET_KEY', secrets.token_hex())
+    VERSION = '1.2.5'
+
     #TESTING = True
     #SEND_FILE_MAX_AGE_DEFAULT = 0  # For development only
-    
+
     SESSION_PERMANENT = False
