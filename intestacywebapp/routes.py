@@ -72,9 +72,15 @@ def beneficiaries():
 
 @app.route('/calculate/distribution', methods=['GET', 'POST'])
 def distribution():
+    # TODO: Make whether distribution date info and recalculation field appear be dependant on whether interest applies
+    # That might require switching form.html to be includable instead of using extend
+    
+    # TODO: Warn if increasing estate value could require inclusion of more beneficiaries
+    
     form = RecalculateForm()
+    form.distribution_date.render_kw['min'] = session_interface.load_from_session('deathdate').isoformat()
     if form.validate_on_submit():
-        session_interface.update_session(form.data)
+        session_interface.update_session({field: data for field, data in form.data.items() if data})
     estate = processing.calculate_distribution(**session_interface.load_session())
     # TODO: Also say whether a grant of LoA is required to get $ from a bank (AA s139)
     return render_template('distribution.html', 

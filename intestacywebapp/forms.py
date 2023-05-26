@@ -7,7 +7,7 @@ try:  # handle version conflicts
     from wtforms.fields.html5 import DateField, DecimalField
 except ModuleNotFoundError:
     from wtforms import DateField, DecimalField
-from wtforms.validators import InputRequired, NumberRange, ValidationError
+from wtforms.validators import InputRequired, NumberRange, Optional, ValidationError
 
 from intestacywebapp.utils import ordinal_fmt
 
@@ -52,7 +52,7 @@ class RelativeNumberField(SelectField):
         if validators is None:
             validators = [InputRequired('Please type a number'), NumberRange(min=0)]
 
-        choices = [(n, str(n)) for n in range(max + 1)]
+        choices = range(max + 1)
 
         kwargs.setdefault('render_kw', {}).setdefault('required', True)
         class_ = kwargs['render_kw'].get('class', '').split()
@@ -89,11 +89,12 @@ def nonsurviving_relative_form_builder(origin, child):
 
 
 class TestForm(FlaskForm):
-    a = StringField('string')
+    date = DateField(
+        'Test:',
+        default=str(datetime.date.today()),
+        format='%Y-%m-%d', render_kw={'placeholder': 'yyyy-mm-dd', 'min': '1997-12-15'})
+        
     submit = SubmitField('Submit')
-
-    def __init__(self, relative, **kwargs):
-        super().__init__(**kwargs)
 
 
 class EstateForm(FlaskForm):
@@ -252,9 +253,19 @@ class RecalculateForm(FlaskForm):
 
     value = MoneyField(
         'Re-calculate with a different value:',
-        [InputRequired('Please type a number'), NumberRange(
+        [NumberRange(
             min=1,
-            message='Estate value must be at least $1.00')],
+            message='Estate value must be at least $1.00'),
+        Optional()],
         render_kw={'min': '1'})
 
+    distribution_date = DateField(
+        'Re-calculate with a different date of distribution:', 
+        default=datetime.date.today(), 
+        format='%Y-%m-%d', render_kw={'placeholder': 'yyyy-mm-dd', 'min': '1997-12-15'})
+
     submit = SubmitField('Go')
+    
+    def validate_distribution_date(form, field):
+        if field.data < datetime.date.fromisoformat(field.render_kw['min']):
+            raise ValidationError('Distribution date must be after date of death')

@@ -3,7 +3,8 @@
 {% block content %}
 <h1>Distribution to beneficiaries on intestacy</h1>
 <div>
-    <h2>Date of death: <time datetime="{{ estate.deathdate.strftime('%Y-%m-%d') }}">{{ estate.deathdate.strftime('%-d %B %Y') }}</time></h2>
+    <h2>Date of death: <time datetime="{{ estate.deathdate.isoformat() }}">{{ estate.deathdate.strftime('%-d %B %Y') }}</time></h2>
+    <h2>Date of distribution: <time datetime="{{ estate.distribution_date.isoformat() }}">{{ estate.distribution_date.strftime('%-d %B %Y') }}</time></h2>
     <h2>Value of estate: {{ dollar(estate.value) }}</h2>
     {% if estate.aboriginal_warning %}
     <p id="aboriginal-warning">WARNING: For intestate deaths before <time datetime="2013-08-07">7 August 2013</time> the estate may be distributed differently if the deceased was of Aboriginal descent.</p>
@@ -23,11 +24,11 @@
         </colgroup>
         <thead>
             <tr>
-                <!--TODO: Is there a better alternative to the <br>s, since they aren't semantic?-->
+                <!--TODO: Is there a better alternative to the <br>s, since they aren't semantic? Maybe |wordwrap-->
                 <th scope="col" class="col-major beneficiary">Beneficiary</th>
                 <th scope="col" class="col-minor name">Name</th>
                 <th scope="col" class="col-minor fixed">Fixed sum <br>entitlement</th>
-                <th scope="col" class="col-minor interest">Interest <br>to date on <br>fixed sum</th>
+                <th scope="col" class="col-minor interest">Interest <br>on fixed sum</th>
                 <th scope="col" class="col-major fraction">Fraction <br>of residue</th>
                 <th scope="col" class="col-minor percentage">Percentage <br>of residue</th>
                 <th scope="col" class="col-major share">Total share <br>of estate</th>
@@ -61,7 +62,16 @@
 </div>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
-    {{ form.value.label }} $ {{ form.value(size=15) }} {{ form.submit() }}
+    {% for field in form %}
+    {% if field.type not in ("CSRFTokenField", "SubmitField") %}
+    <div id="{{ field.id }}-div" class="{{ field.render_kw['class'] }}" {{ field.render_kw["hidden"] }}>
+        {% include "field.html" %}
+    </div>
+    {% endif %}
+    {% endfor %}
+    <p>
+        {{ form.submit() }}
+    </p>
 </form>
 <aside><p>
     Can you rely on this information? Click here to find out.

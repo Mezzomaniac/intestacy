@@ -23,10 +23,11 @@ def calculate_distribution(
     surviving_auntuncles_num=0, 
     surviving_auntuncles=[], 
     nonsurviving_auntuncles_num=0, 
-    nonsurviving_auntuncles=[]
+    nonsurviving_auntuncles=[], 
+    distribution_date=None
     ):
     
-    estate = Estate(deathdate, value)
+    estate = Estate(deathdate, value, distribution_date)
     
     if spouse_num:
         estate.spouse = Relative('Spouse', spouse)

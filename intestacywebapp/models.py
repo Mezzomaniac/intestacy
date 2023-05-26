@@ -70,9 +70,10 @@ class DeFacto(Relative):
 
 class Estate:
 
-    def __init__(self, deathdate:datetime.date, value:Decimal):
+    def __init__(self, deathdate:datetime.date, value:Decimal,     distribution_date:datetime.date=None):
         self.deathdate = deathdate
         self.value = Decimal(value)
+        self.distribution_date =     distribution_date or max(deathdate, datetime.date.today())
         
         self.set_specified_items()
         self.aboriginal_warning = deathdate < data.AAPA_AM_ACT_12
@@ -127,6 +128,9 @@ class Estate:
                     setattr(self, item, amount)
                 return
         raise ValueError(f'Date of death must not be earlier than {min(data.SPECIFIED_ITEMS):%-d %B %Y}')
+    
+    def calculate_interest(self, amount):
+        return amount * (self.distribution_date - self.deathdate).days / 365 * Decimal('0.05')
 
     def to_json(self):
         return json.dumps(self, cls=MyEncoder)
@@ -164,7 +168,7 @@ class Estate:
 
         if balance:
             fixed = self.ITEM_2
-            interest = fixed * (datetime.date.today() - self.deathdate).days / 365 * Decimal('0.05')
+            interest = self.calculate_interest(fixed)
             interest = min(balance, interest)
             partner_share += interest
             balance -= interest
@@ -188,7 +192,7 @@ class Estate:
 
         if balance:
             partner_fixed = self.ITEM_3A_AND_B
-            interest = partner_fixed * (datetime.date.today() - self.deathdate).days / 365 * Decimal('0.05')
+            interest = self.calculate_interest(partner_fixed)
             interest = min(balance, interest)
             partner_share += interest
             balance -= interest
