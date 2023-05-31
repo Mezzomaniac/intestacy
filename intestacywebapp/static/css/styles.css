@@ -35,7 +35,7 @@ header {
 }
 
 .external-warning {
-	font-size: 0.65em;
+	font-size: 0.75em;
 }
 
 main {
@@ -120,13 +120,13 @@ h3 {
 table {
 	display: block;
 	overflow-x: auto;
-	/*white-space: normal;*/
+	white-space: normal;
 	margin: 0 auto;
-	padding: 1.5em;
+	padding: 1.0em;
 	background-color: darkslateblue;
 	border-collapse: collapse;
 	border-color: dimgrey;
-	border-width: 0.8em;
+	border-width: 1.0em;
 	border-style: solid;
 	font-size: 1.5em;
 	line-height: normal;
@@ -135,26 +135,23 @@ table {
 
 th, td {
 	margin: 1.2em;
-	padding: 1.rem;
+	padding: 0.8em;
 	border-color: darkgrey;
-	border-width: 0.8em;
+	border-width: 10px;
 	border-style: solid;
 }
 
 thead, tfoot {
 	font-weight: 1.3em;
 	font-size: 1.3em/1;
-	white-space: pre;
 	background-color: orchid;
 }
 
 .row-odd {
-	color: black;
 	background-color: lightgreen;
 }
 
 .row-even {
-	color: black;
 	background-color: moccasin;
 }
 
@@ -164,7 +161,6 @@ td.beneficiary {
 
 .notes {
 	text-align: left;
-	width: 15em;
 }
 
 th.notes {
@@ -173,6 +169,7 @@ th.notes {
 
 ul.notes>li {
 	margin-bottom: 0.5em;
+	width: 30em;
 }
 
 .decimal {
