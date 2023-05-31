@@ -6,6 +6,7 @@ class Config:
     VERSION = '1.3.0'
 
     #TESTING = True
-    #SEND_FILE_MAX_AGE_DEFAULT = 0  # For development only
+    if TESTING:
+        SEND_FILE_MAX_AGE_DEFAULT = 0  # For development only
 
     SESSION_PERMANENT = False

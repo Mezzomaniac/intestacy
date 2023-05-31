@@ -123,7 +123,7 @@ class Estate:
     def set_specified_items(self):
         for date, amounts in reversed(sorted(data.SPECIFIED_ITEMS.items())):
             if self.deathdate >= date:
-                self.specified_items = {item.upper(): Decimal(amount) for  item, amount in amounts.items()}
+                self.specified_items = {item.upper(): Decimal(amount) for item, amount in amounts.items()}
                 for item, amount in self.specified_items.items():
                     setattr(self, item, amount)
                 return

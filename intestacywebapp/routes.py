@@ -1,5 +1,8 @@
 from flask import abort, redirect, render_template, request, url_for
-import git
+try:
+    import git
+except ImportError:
+    pass
 
 from intestacywebapp import app
 from intestacywebapp.forms import EstateForm, BeneficiariesForm, RecalculateForm
@@ -20,10 +23,9 @@ def act():
 def test():
     if not app.config['TESTING']:
         abort(403)
-    return redirect(url_for('index'))
-
+    
     return render_template('distribution.html', title='Test',
-    estate = _tests.estate, dollar=utils.money_fmt)
+    estate = _tests.estate, dollar=utils.money_fmt, form=RecalculateForm())
 
     form = BeneficiariesForm()
     specified_items = {
