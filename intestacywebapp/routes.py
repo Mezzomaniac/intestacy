@@ -24,8 +24,13 @@ def test():
     if not app.config['TESTING']:
         abort(403)
     
+    estate = _tests.estate
+    import datetime
+    estate.deathdate = datetime.date(2000, 1, 1)
+    estate.distribute()
+    
     return render_template('distribution.html', title='Test',
-    estate = _tests.estate, dollar=utils.money_fmt, form=RecalculateForm())
+    estate = estate, dollar=utils.money_fmt, form=RecalculateForm())
 
     form = BeneficiariesForm()
     specified_items = {
@@ -53,7 +58,6 @@ def calculate():
     if form.validate_on_submit():
         session_interface.update_session(form.data)
         session_interface.set_specified_items(form.deathdate.data)
-        # TODO: compare deathdate to date of 2002 amendments
         return redirect(url_for('beneficiaries'))
     return render_template('form.html', title='Calculate Intestacy - Estate Details', form=form)
 

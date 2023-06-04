@@ -3,6 +3,7 @@ from decimal import Decimal
 from fractions import Fraction
 
 from flask import json
+from markupsafe import Markup
 
 from intestacywebapp import data
 
@@ -89,10 +90,12 @@ class Estate:
 
     @property
     def eligible_spouse(self):
-        return getattr(self.spouse, 'survived', False) and not any(defacto.length >= 5 for defacto in self.defactos)
+        return getattr(self.spouse, 'survived', False) and not (self.eligible_defactos and any(defacto.length >= 5 for defacto in self.defactos))
 
     @property
     def eligible_defactos(self):
+        if self.deathdate < data.FAM_CT_AM_ACT_02:
+            return 0
         return sum(defacto.length >= 2 for defacto in self.defactos)
 
     @property
@@ -175,7 +178,7 @@ class Estate:
         if balance:
             division = 2 if self.eligible_issue == 1 else 3
             partner_fraction /= division
-            issue_fraction = 1 -partner_fraction
+            issue_fraction = 1 - partner_fraction
             partner_share += balance / division
             balance -= balance / division
 
@@ -296,6 +299,11 @@ class Estate:
             self.spouse.fixed = fixed
             self.spouse.interest = interest
             self.spouse.notes = notes
+        if not self.eligible_defactos:
+            note = Markup('De facto partners did not inherit on intestacy from deaths before the commencement of the <cite>Family Court Amendment Act 2002</cite> (WA) on <time datetime="2002-12-1">1 December 2002</time>.')
+            for defacto in self.defactos:
+                defacto.notes = [note]
+            return
         for defacto in self.defactos:
             if defacto.length >= 2:
                 defacto.share = share / self.eligible_defactos
