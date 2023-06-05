@@ -95,6 +95,9 @@ class Estate:
     @property
     def eligible_defactos(self):
         if self.deathdate < data.FAM_CT_AM_ACT_02:
+            note = Markup('De facto partners did not inherit on intestacy from deaths before the commencement of the <cite>Family Court Amendment Act 2002</cite> (WA) on <time datetime="2002-12-1">1 December 2002</time>.')
+            for defacto in self.defactos:
+                defacto.notes = [note]
             return 0
         return sum(defacto.length >= 2 for defacto in self.defactos)
 
@@ -221,12 +224,7 @@ class Estate:
                 siblings_fraction = Fraction(1, 4)
                 parent_share += balance / 2
                 balance /= 2
-
-            parents = len(self.parents)
-            for parent in self.parents:
-                parent.share = parent_share / parents
-                parent.fraction = parent_fraction / parents
-                parent.fixed = parent_fixed / parents
+            self.distribute_to_parents(parent_share, parent_fraction, parent_fixed)
 
         else:
             siblings_fraction = Fraction(1, 2)
@@ -254,18 +252,11 @@ class Estate:
             parent_share += balance / 2
             balance /= 2
 
-        parents = len(self.parents)
-        for parent in self.parents:
-            parent.share = parent_share / parents
-            parent.fraction = parent_fraction / parents
-            parent.fixed = fixed / parents
+        self.distribute_to_parents(parent_share, parent_fraction, fixed)
         self.distribute_to_descendible_relatives('siblings', balance, siblings_fraction)
 
     def item7(self):
-        parents = len(self.parents)
-        for parent in self.parents:
-            parent.share = self.value / parents
-            parent.fraction = Fraction(1) / parents
+        self.distribute_to_parents(self.value)
 
     def item8(self):
         self.distribute_to_descendible_relatives('siblings', self.value)
@@ -300,9 +291,6 @@ class Estate:
             self.spouse.interest = interest
             self.spouse.notes = notes
         if not self.eligible_defactos:
-            note = Markup('De facto partners did not inherit on intestacy from deaths before the commencement of the <cite>Family Court Amendment Act 2002</cite> (WA) on <time datetime="2002-12-1">1 December 2002</time>.')
-            for defacto in self.defactos:
-                defacto.notes = [note]
             return
         for defacto in self.defactos:
             if defacto.length >= 2:
@@ -326,3 +314,14 @@ class Estate:
                 for child in relative.issue:
                     child.fraction = fraction / issue
                     child.share = share / issue
+                    
+    def distribute_to_parents(self, share, fraction=Fraction(1), fixed=Decimal('0.00')):
+        portions = len(self.parents)
+        for parent in self.parents:
+            
+            parent.share = share / portions
+            parent.fraction = fraction / portions
+            parent.fixed = fixed / portions
+            if self.deathdate < data.LG_LAW_REFORM_ACT_02:
+                note = Markup('Same-sex couples were not recognised as parents before the commencement of the <cite>Acts Amendment (Lesbian and Gay Law Reform) Act 2002</cite> (WA) on <time datetime="2002-9-21">21 September 2002</time>.')
+                parent.notes = [note]

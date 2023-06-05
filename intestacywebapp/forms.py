@@ -188,7 +188,6 @@ class BeneficiariesForm(FlaskForm):
         'Parents',
         render_kw={'class': 'parents'},
         min_entries=2)
-    # TODO: Refer to 'mother' & 'father' if < 21/9/02.
 
     surviving_siblings_num = RelativeNumberField(
         'living siblings (including half-siblings)',

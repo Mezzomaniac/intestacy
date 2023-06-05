@@ -15,8 +15,11 @@ SPECIFIED_ITEMS = {
         'item_3bi': 56500,
         'item_6': 56500}
     }
-# TODO: 21/09/02: parents need not be a mother and father
 # TODO: Automatically check for new orders under s 14A Administration Act
+
+# Acts Amendment (Lesbian and Gay Law Reform) Act 2002 (WA) commencement date:
+LG_LAW_REFORM_ACT_02 = datetime.date(2002, 9, 21)
+# TODO: 21/09/02: parents need not be a mother and father
 
 # Family Court Amendment Act 2002 (WA) substantive commencement date:
 FAM_CT_AM_ACT_02 = datetime.date(2002, 12, 1)
