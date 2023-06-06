@@ -81,6 +81,7 @@ def beneficiaries():
 def distribution():
     # TODO: Make whether distribution date info and recalculation field appear be dependant on whether interest applies
     # That might require switching form.html to be includable instead of using extend
+    # Or including scripts.html from distribution.html, not just form.html
     
     # TODO: Warn if increasing estate value could require inclusion of more beneficiaries
     
@@ -89,7 +90,6 @@ def distribution():
     if form.validate_on_submit():
         session_interface.update_session({field: data for field, data in form.data.items() if data})
     estate = processing.calculate_distribution(**session_interface.load_session())
-    # TODO: Also say whether a grant of LoA is required to get $ from a bank (AA s139)
     return render_template('distribution.html',
         title='Distribution',
         estate=estate,

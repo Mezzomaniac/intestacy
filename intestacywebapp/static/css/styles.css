@@ -159,13 +159,14 @@ td.beneficiary {
 	white-space: pre-wrap;
 }
 
-.notes {
+td.notes {
 	text-align: left;
+	font-size: 0.8em
 }
 
-th.notes {
+/*th.notes {
 	text-align: center;
-}
+}*/
 
 ul.notes>li {
 	margin-bottom: 0.5em;
