@@ -14,11 +14,6 @@ from intestacywebapp import _tests
 def index():
     return render_template('index.html', title='Home')
 
-@app.route('/act')
-def act():
-    #TODO: How do I get the true URL to show up when users mouse over the link?
-    return redirect(data.ACT_URL)
-
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     if not app.config['TESTING']:
@@ -30,7 +25,7 @@ def test():
     estate.distribute()
     
     return render_template('distribution.html', title='Test',
-    estate = estate, dollar=utils.money_fmt, form=RecalculateForm())
+    estate = estate, form=RecalculateForm())
 
     form = BeneficiariesForm()
     specified_items = {
@@ -93,7 +88,6 @@ def distribution():
     return render_template('distribution.html',
         title='Distribution',
         estate=estate,
-        dollar=utils.money_fmt,
         form=form)
     # TODO: Enable saving a set of beneficiaries to be recalculated with a different net value
 
