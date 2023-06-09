@@ -14,37 +14,6 @@ from intestacywebapp import _tests
 def index():
     return render_template('index.html', title='Home')
 
-@app.route('/test', methods=['GET', 'POST'])
-def test():
-    if not app.config['TESTING']:
-        abort(403)
-    
-    estate = _tests.estate
-    import datetime
-    estate.deathdate = datetime.date(2000, 1, 1)
-    estate.distribute()
-    
-    return render_template('distribution.html', title='Test',
-    estate = estate, form=RecalculateForm())
-
-    form = BeneficiariesForm()
-    specified_items = {
-        'item_2': 50000,
-        'item_3a_and_b': 75000,
-        'item_3bi': 6000,
-        'item_6': 6000}
-    return render_template('form.html', title="Test", form=form, scripts=True,
-        specified_items=specified_items, value=80000)
-
-@app.route('/test2', methods=['GET', 'POST'])
-def test2():
-    if not app.config['TESTING']:
-        abort(403)
-    form = TestForm()
-    if form.validate_on_submit():
-        return redirect(url_for('test1'))
-    return render_template('test.html', title='test2', form=form)
-
 @app.route('/calculate', methods=['GET', 'POST'])
 @app.route('/calculate/estate', methods=['GET', 'POST'])
 def calculate():
@@ -91,6 +60,10 @@ def distribution():
         form=form)
     # TODO: Enable saving a set of beneficiaries to be recalculated with a different net value
 
+@app.route('/disclaimer')
+def disclaimer():
+    return render_template('disclaimer.html', title='Disclaimer')
+
 @app.post('/update_server')
 def webhook():
     if request.method != 'POST':
@@ -103,3 +76,35 @@ def webhook():
     repo = git.Repo('/home/themezj/intestacy/.git')
     repo.remotes.origin.pull()
     return 'Updated PythonAnywhere successfully'
+
+
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+    if not app.config['TESTING']:
+        abort(403)
+    
+    estate = _tests.estate
+    import datetime
+    estate.deathdate = datetime.date(2000, 1, 1)
+    estate.distribute()
+    
+    return render_template('distribution.html', title='Test',
+    estate = estate, form=RecalculateForm())
+
+    form = BeneficiariesForm()
+    specified_items = {
+        'item_2': 50000,
+        'item_3a_and_b': 75000,
+        'item_3bi': 6000,
+        'item_6': 6000}
+    return render_template('form.html', title="Test", form=form, scripts=True,
+        specified_items=specified_items, value=80000)
+
+@app.route('/test2', methods=['GET', 'POST'])
+def test2():
+    if not app.config['TESTING']:
+        abort(403)
+    form = TestForm()
+    if form.validate_on_submit():
+        return redirect(url_for('test1'))
+    return render_template('test.html', title='test2', form=form)

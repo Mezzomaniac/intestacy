@@ -23,6 +23,7 @@
             <div><a href="{{ url_for('index') }}">Home</a></div>
             <div><a href="{{ url_for('calculate') }}">Calculate</a></div>
             <div><a href="{{ act_url }}" rel="external" target="_blank"><cite>Administration Act 1903</cite> (WA)</a> <span class="external-warning">(external link)</span></div>
+            <div><a href="{{ url_for('disclaimer') }}">Disclaimer</a></div>
             {% if config['TESTING'] %}
             <div><a href="{{ url_for('test') }}">test</a></div>
             {% endif %}
