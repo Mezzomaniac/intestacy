@@ -9,8 +9,8 @@ from intestacywebapp.forms import EstateForm, BeneficiariesForm, RecalculateForm
 from intestacywebapp import data, processing, session_interface, utils
 from intestacywebapp import _tests
 
-@app.route('/')
-@app.route('/index')
+@app.get('/')
+@app.get('/index')
 def index():
     return render_template('index.html', title='Home')
 
@@ -60,7 +60,7 @@ def distribution():
         form=form)
     # TODO: Enable saving a set of beneficiaries to be recalculated with a different net value
 
-@app.route('/disclaimer')
+@app.get('/disclaimer')
 def disclaimer():
     return render_template('disclaimer.html', title='Disclaimer')
 
