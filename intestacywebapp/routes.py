@@ -33,9 +33,7 @@ def beneficiaries():
         return redirect(url_for('distribution'))
     deathdate = session_interface.load_from_session('deathdate')
     fam_ct_am_act_02 = deathdate >= data.FAM_CT_AM_ACT_02
-    specified_items = session_interface.load_from_session('specified_items')
-    value = session_interface.load_from_session('value')
-    jsconstants = {"specified_items": specified_items, "value": str(value), "fam_ct_am_act_02": int(fam_ct_am_act_02)}
+    jsconstants = {"fam_ct_am_act_02": int(fam_ct_am_act_02)}
     return render_template('form.html',
         title="Calculate Intestacy - Beneficiaries' Details",
         form=form,
@@ -46,8 +44,6 @@ def distribution():
     # TODO: Make whether distribution date info and recalculation field appear be dependant on whether interest applies
     # That might require switching form.html to be includable instead of using extend
     # Or including scripts.html from distribution.html, not just form.html
-    
-    # TODO: Warn if increasing estate value could require inclusion of more beneficiaries
     
     form = RecalculateForm()
     form.distribution_date.render_kw['min'] = session_interface.load_from_session('deathdate').isoformat()

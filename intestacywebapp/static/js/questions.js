@@ -1,5 +1,3 @@
-const value = Number.parseFloat(constants['value']);
-const specifiedItems = constants['specified_items'];
 const famCtAmAct02 = parseInt(constants['fam_ct_am_act_02']);
 var spouse = false;
 var defacto = false;
@@ -19,8 +17,6 @@ $(function() {
 
 function init() {
     displayIfFamCtAmAct02();
-    displayIfItem2();
-    //displayInvalid();
     bindEventActions();
 };
 
@@ -30,18 +26,7 @@ function displayIfFamCtAmAct02() {
     };
 };
 
-function displayIfItem2() {
-    if ( value > specifiedItems['item_2'] ) {
-        $('.if-item2').removeClass('if-no-partner');//css('display', 'inherit').removeClass('if-no-partner');
-    };
-};
-
-//function displayInvalid() {
-    //$(':invalid').show().parents().show();
-//};
-
 function bindEventActions() {
-    //disableSubmit();
     displaySubfields();
     updateSpouse();
     updateDefacto();
@@ -55,10 +40,8 @@ function bindEventActions() {
 
 function displaySubfields() {
     $('.relative-number-field').change(function() {
-        //var n = Number($(this).prev().val());
         var n = Number($(this).val());
-        var container = $(this).parent().next().children();  // ol
-        //$(container).prop('hidden', !Boolean(n));
+        var container = $(this).parent().next().children(); 
         var forms = $(container).children('li');
         $(forms).slice(0, n).slideDown(500).find('input.relative-number-field').prop('required', true);
         $(forms).slice(n).slideUp(500).find('input.relative-number-field').prop('required', false);
@@ -162,21 +145,15 @@ function displayIfSpouse() {
 };
 
 function displayIfNoPartner() {
-    $('.if-no-partner').prop('hidden', partner);//css('display', 'inherit');
+    $('.if-no-partner').prop('hidden', partner);
 };
 
 function displayParents() {
-    var partnerShare = partner * specifiedItems['item_3a_and_b'];
-    criteria = !issue && value > 
-    partnerShare;
-    $('.parents').prop('hidden', !criteria);
+    $('.parents').prop('hidden', issue);
 };
 
 function displaySiblings() {
-    var parentsShare = parents * specifiedItems['item_3bi'];
-    var partnerShare = partner * (specifiedItems['item_3a_and_b'] + parentsShare);
-    criteria = !issue && value > partnerShare + parentsShare;
-    $('.siblings').prop('hidden', !criteria);
+    $('.siblings').prop('hidden', issue);
 };
 
 function displayGrandparents() {

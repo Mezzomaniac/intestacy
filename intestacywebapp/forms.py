@@ -158,23 +158,23 @@ class BeneficiariesForm(FlaskForm):
 
     surviving_issue_num = RelativeNumberField(
         'living children',
-        render_kw={'class': 'issue if-no-partner if-item2'})
+        render_kw={'class': 'issue'})
     surviving_issue = FieldList(
         StringField(
             "(Optional) What is the surviving child’s name?",
             render_kw={'placeholder': 'Child'}),
         'Surviving children',
-        render_kw={'class': 'issue, if-no-partner if-item2'},
+        render_kw={'class': 'issue'},
         min_entries=20)
 
     nonsurviving_issue_num = RelativeNumberField(
         'deceased children who left children',
-        render_kw={'class': 'issue if-no-partner if-item2'})
+        render_kw={'class': 'issue'})
     nonsurviving_issue = FieldList(
         FormField(
             nonsurviving_relative_form_builder('child', 'grandchild')),
         'Non-surviving children',
-        render_kw={'class': 'issue, if-no-partner if-item2'},
+        render_kw={'class': 'issue'},
         min_entries=20)
 
     parents_num = RelativeNumberField(

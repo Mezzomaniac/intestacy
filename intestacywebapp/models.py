@@ -5,7 +5,13 @@ from fractions import Fraction
 from flask import json
 from markupsafe import Markup
 
-from intestacywebapp import data
+try:
+    from intestacywebapp import data
+except ModuleNotFoundError:
+    import data
+
+
+NEEDS_LARGER_ESTATE_NOTE = 'Could inherit if the estate were larger.'
 
 
 class MyEncoder(json.JSONEncoder):
@@ -32,7 +38,7 @@ class Relative:
         self.interest = Decimal('0.00')
         self.fraction = Fraction(0)
         self.share = Decimal('0.00')
-        self.notes = []
+        self.notes = set()
 
     def __repr__(self):
         return f'{self.__class__.__name__}({self.relationship}, {self.name}, survived={self.survived})'
@@ -97,7 +103,7 @@ class Estate:
         if self.deathdate < data.FAM_CT_AM_ACT_02:
             note = Markup('De facto partners did not inherit on intestacy from deaths before the commencement of the <cite>Family Court Amendment Act 2002</cite> (WA) on <time datetime="2002-12-1">1 December 2002</time>.')
             for defacto in self.defactos:
-                defacto.notes = [note]
+                defacto.notes.add(note)
             return 0
         return sum(defacto.length >= 2 for defacto in self.defactos)
 
@@ -140,8 +146,17 @@ class Estate:
 
     def to_json(self):
         return json.dumps(self, cls=MyEncoder)
+    
+    def reset(self):
+        for relative in self:
+            relative.fixed = Decimal('0.00')
+            relative.interest = Decimal('0.00')
+            relative.fraction = Fraction(0)
+            relative.share = Decimal('0.00')
+            relative.notes = set()
 
     def distribute(self):
+        self.reset()
         if self.eligible_partner and self.eligible_issue:
             self.item2()
         elif self.eligible_partner and (self.parents or self.eligible_siblings):
@@ -192,6 +207,10 @@ class Estate:
         partner_fixed = Decimal('0.00')
         interest = Decimal('0.00')
         partner_fraction = Fraction(1)
+        parents_fixed = Decimal('0.00')
+        parents_fraction = Fraction(0)
+        parents_share = Decimal('0.00')
+        siblings_fraction = Fraction(0)
 
         partner_share = min(self.value, self.ITEM_3A_AND_B)
         balance = self.value - partner_share
@@ -206,28 +225,23 @@ class Estate:
             partner_fraction = Fraction(1, 2)
             partner_share += balance / 2
             balance /= 2
-
+        if balance:
+            if self.parents:
+                parents_fraction = Fraction(1, 2)
+                parents_share = min(balance, self.ITEM_3BI)
+                balance -= parents_share
+                if balance and self.eligible_siblings:
+                    parents_fixed = self.ITEM_3BI
+                    parents_fraction = Fraction(1, 4)
+                    siblings_fraction = Fraction(1, 4)
+                    parents_share += balance / 2
+                    balance /= 2
+    
+            else:
+                siblings_fraction = Fraction(1, 2)
         self.distribute_to_partners(partner_share, partner_fraction, partner_fixed, interest)
-
-        if not balance:
-            return
-
         if self.parents:
-            parent_fixed = Decimal('0.00')
-            parent_fraction = Fraction(1, 2)
-            siblings_fraction = Fraction(0)
-            parent_share = min(balance, self.ITEM_3BI)
-            balance -= parent_share
-            if balance and self.eligible_siblings:
-                parent_fixed = self.ITEM_3BI
-                parent_fraction = Fraction(1, 4)
-                siblings_fraction = Fraction(1, 4)
-                parent_share += balance / 2
-                balance /= 2
-            self.distribute_to_parents(parent_share, parent_fraction, parent_fixed)
-
-        else:
-            siblings_fraction = Fraction(1, 2)
+            self.distribute_to_parents(parents_share, parents_fraction, parents_fixed)
         if self.eligible_siblings:
             self.distribute_to_descendible_relatives('siblings', balance, siblings_fraction)
 
@@ -239,20 +253,20 @@ class Estate:
 
     def item6(self):
         fixed = Decimal('0.00')
-        parent_fraction = Fraction(1)
+        parents_fraction = Fraction(1)
         siblings_fraction = Fraction(0)
 
-        parent_share = min(self.value, self.ITEM_6)
-        balance = self.value - parent_share
+        parents_share = min(self.value, self.ITEM_6)
+        balance = self.value - parents_share
 
         if balance:
             fixed = self.ITEM_6
-            parent_fraction = Fraction(1, 2)
+            parents_fraction = Fraction(1, 2)
             siblings_fraction = Fraction(1, 2)
-            parent_share += balance / 2
+            parents_share += balance / 2
             balance /= 2
 
-        self.distribute_to_parents(parent_share, parent_fraction, fixed)
+        self.distribute_to_parents(parents_share, parents_fraction, fixed)
         self.distribute_to_descendible_relatives('siblings', balance, siblings_fraction)
 
     def item7(self):
@@ -277,9 +291,9 @@ class Estate:
 
     def distribute_to_partners(self, share, fraction=Fraction(1), fixed=Decimal('0.00'), interest=Decimal('0.00')):
         portions = (self.eligible_spouse + bool(self.eligible_defactos))
-        notes = ['Plus household chattels.']
+        notes = {'Plus household chattels.'}
         if fraction < 1 or portions > 1 or self.eligible_defactos > 1:
-            notes.append('The deceased’s partner may choose to receive the home they were living in at the date of death instead of the monetary equivalent.')
+            notes.add('The deceased’s partner may choose to receive the home they were living in at the date of death instead of the monetary equivalent.')
         share /= portions
         fraction /= portions
         fixed /= portions
@@ -289,7 +303,7 @@ class Estate:
             self.spouse.fraction = fraction
             self.spouse.fixed = fixed
             self.spouse.interest = interest
-            self.spouse.notes = notes
+            self.spouse.notes |= notes
         if not self.eligible_defactos:
             return
         for defacto in self.defactos:
@@ -298,7 +312,7 @@ class Estate:
                 defacto.fraction = fraction / self.eligible_defactos
                 defacto.fixed = fixed / self.eligible_defactos
                 defacto.interest = interest / self.eligible_defactos
-                defacto.notes = notes
+                defacto.notes |= notes
 
     def distribute_to_descendible_relatives(self, relatives, share, fraction=Fraction(1)):
         portions = getattr(self, f'eligible_{relatives}')
@@ -309,11 +323,15 @@ class Estate:
             if relative.survived:
                 relative.fraction = fraction
                 relative.share = share
+                if not share:
+                    relative.notes.add(NEEDS_LARGER_ESTATE_NOTE)
             else:
                 issue = len(relative.issue)
                 for child in relative.issue:
                     child.fraction = fraction / issue
                     child.share = share / issue
+                    if not share:
+                        child.notes.add(NEEDS_LARGER_ESTATE_NOTE)
                     
     def distribute_to_parents(self, share, fraction=Fraction(1), fixed=Decimal('0.00')):
         portions = len(self.parents)
@@ -322,6 +340,8 @@ class Estate:
             parent.share = share / portions
             parent.fraction = fraction / portions
             parent.fixed = fixed / portions
+            if not share:
+                parent.notes.add(NEEDS_LARGER_ESTATE_NOTE)
             if self.deathdate < data.LG_LAW_REFORM_ACT_02:
                 note = Markup('Same-sex couples were not recognised as parents before the commencement of the <cite>Acts Amendment (Lesbian and Gay Law Reform) Act 2002</cite> (WA) on <time datetime="2002-9-21">21 September 2002</time>.')
-                parent.notes = [note]
+                parent.notes.add(note)
