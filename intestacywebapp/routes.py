@@ -41,10 +41,6 @@ def beneficiaries():
 
 @app.route('/calculate/distribution', methods=['GET', 'POST'])
 def distribution():
-    # TODO: Make whether distribution date info and recalculation field appear be dependant on whether interest applies
-    # That might require switching form.html to be includable instead of using extend
-    # Or including scripts.html from distribution.html, not just form.html
-    
     form = RecalculateForm()
     form.distribution_date.render_kw['min'] = session_interface.load_from_session('deathdate').isoformat()
     if form.validate_on_submit():
