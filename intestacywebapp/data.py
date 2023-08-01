@@ -13,7 +13,12 @@ SPECIFIED_ITEMS = {
         {'item_2': 472000,
         'item_3a_and_b': 705000,
         'item_3bi': 56500,
-        'item_6': 56500}
+        'item_6': 56500},
+    datetime.date(2023, 8, 2):
+        {'item_2': 501000,
+        'item_3a_and_b': 748500,
+        'item_3bi': 60000,
+        'item_6': 60000}
     }
 # TODO: Automatically check for new orders under s 14A Administration Act
 
