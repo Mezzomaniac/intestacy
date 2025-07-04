@@ -3,7 +3,7 @@ import secrets
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', secrets.token_hex())
-    VERSION = '1.4.0'
+    VERSION = '1.5.0'
 
     TESTING = False
     if TESTING:
